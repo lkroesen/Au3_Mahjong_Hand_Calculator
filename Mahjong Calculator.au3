@@ -4,11 +4,13 @@
 #include <GUIConstantsEx.au3>
 #include <StaticConstants.au3>
 #include <WindowsConstants.au3>
+#include <HandChecker.au3>
 
 HotKeySet("{F1}", "nullifyOriginChange")
 HotKeySet("d", "selectNext")
 HotKeySet("a", "selectPrev")
 HotKeySet("{F9}", "status")
+HotKeySet("{F5}", "Checker")
 
 ; Use arrays for GUI elements might be useful later on.
 Global $piTile[19] ; 0 unused
@@ -170,11 +172,18 @@ GUISetState(@SW_SHOW)
 
 ; Create an array to index which tile is on what spot of the hand
 Global $hand[19]
+for $i = 1 to 18 Step 1
+   $hand[$i] = "empty"
+Next
+
 Global $doraValue[14]
+for $i = 1 to 13 Step 1
+   $doraValue[$i] = "empty"
+Next
 
 ; Index all tiles by a unique number
 ; c <TileName> <Number>
-Global Enum $cMAN1, $cMAN2, $cMAN3, $cMAN4, $cMAN5, $cMAN5r, $cMAN6, $cMAN7, $cMAN8, $cMAN9, $cSOU1, $cSOU2, $cSOU3, $cSOU4, $cSOU5, $cSOU5r, $cSOU6, $cSOU7, $cSOU8, $cSOU9, $cPIN1, $cPIN2, $cPIN3, $cPIN4, $cPIN5, $cPIN5r, $cPIN6, $cPIN7, $cPIN8, $cPIN9, $cTON, $cNAN, $cSHAA, $cPEI, $cCHUN, $cHAKU, $cHATSU
+;Global Enum $cMAN1, $cMAN2, $cMAN3, $cMAN4, $cMAN5, $cMAN5r, $cMAN6, $cMAN7, $cMAN8, $cMAN9, $cSOU1, $cSOU2, $cSOU3, $cSOU4, $cSOU5, $cSOU5r, $cSOU6, $cSOU7, $cSOU8, $cSOU9, $cPIN1, $cPIN2, $cPIN3, $cPIN4, $cPIN5, $cPIN5r, $cPIN6, $cPIN7, $cPIN8, $cPIN9, $cTON, $cNAN, $cSHAA, $cPEI, $cCHUN, $cHAKU, $cHATSU
 
 Global $changeOrigin
 
@@ -196,6 +205,7 @@ for $i = 1 to 18 Step 1
    if $msg == $piTile[$i] Then
 	  GUICtrlSetData($debug, "Click on a tile to change Tile " & $i & " into.")
 	  $changeOrigin = $piTile[$i]
+	  GUICtrlSetState($radioTile[$i], $GUI_CHECKED)
    EndIf
 Next
 
@@ -589,7 +599,9 @@ EndFunc
 
 ; Translates the numbers associated with the tiles
 Func TileTranslator($number)
-   if $number == $cMAN1 Then
+   if $number == "empty" Then
+	  return $number
+   elseif $number == $cMAN1 Then
 	  return "Man 1"
    elseif $number ==  $cMAN2 Then
 	  return "Man 2"
@@ -679,6 +691,7 @@ Func selectNext()
 if $changeOrigin == null Then
    GUICtrlSetData($debug, "Click on a tile to change Tile 1 into.")
    $changeOrigin = $piTile[1]
+   GUICtrlSetState($radioTile[1], $GUI_CHECKED)
    return
 EndIf
 
@@ -690,6 +703,7 @@ for $i = 1 to 18 Step 1
    elseif $changeOrigin == $piTile[$i] Then
 	  GUICtrlSetData($debug, "Click on a tile to change Tile " & $i+1 & " into.")
 	  $changeOrigin = $piTile[$i+1]
+	  GUICtrlSetState($radioTile[$i+1], $GUI_CHECKED)
 	  return
    EndIf
 Next
@@ -698,6 +712,7 @@ for $i = 1 to 13 Step 1
    if $changeOrigin == $dora[13] Then
 	  GUICtrlSetData($debug, "Click on a tile to change Hand Tile 1 into.")
 	  $changeOrigin = $piTile[1]
+	  GUICtrlSetState($radioTile[1], $GUI_CHECKED)
 	  return
    elseif $changeOrigin == $dora[$i] Then
 	  GUICtrlSetData($debug, "Click on a tile to change Dora " & $i+1 & " into.")
@@ -726,6 +741,7 @@ for $i = 1 to 18 Step 1
    elseif $changeOrigin == $piTile[$i] Then
 	  GUICtrlSetData($debug, "Click on a tile to change Tile " & $i-1 & " into.")
 	  $changeOrigin = $piTile[$i-1]
+	  GUICtrlSetState($radioTile[$i-1], $GUI_CHECKED)
 	  return
    EndIf
 Next
@@ -734,6 +750,7 @@ for $i = 1 to 13 Step 1
    if $changeOrigin == $dora[1] Then
 	  GUICtrlSetData($debug, "Click on a tile to change Hand Tile 18 into.")
 	  $changeOrigin = $piTile[18]
+	  GUICtrlSetState($radioTile[18], $GUI_CHECKED)
 	  return
    elseif $changeOrigin == $dora[$i] Then
 	  GUICtrlSetData($debug, "Click on a tile to change Dora " & $i-1 & " into.")
