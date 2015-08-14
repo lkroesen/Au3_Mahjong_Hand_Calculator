@@ -1,0 +1,1611 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<object type="TAForm" name="Form1">
+	<properties>
+		<property name="Left" vt="Int16">456</property>
+		<property name="Top" vt="Int8">111</property>
+		<property name="Width" vt="Int16">882</property>
+		<property name="Height" vt="Int16">799</property>
+		<property name="Caption" vt="String">Mahjong Hand Calculator</property>
+		<property name="Color" vt="Ident">clBtnFace</property>
+		<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+		<property name="Font.Color" vt="Ident">clWindowText</property>
+		<property name="Font.Height" vt="Int8">-11</property>
+		<property name="Font.Name" vt="String">MS Sans Serif</property>
+		<property name="Font.Style" vt="Set"/>
+		<property name="OldCreateOrder" vt="False">False</property>
+		<property name="Visible" vt="True">True</property>
+		<property name="Style" vt="Int32">-1798701056</property>
+		<property name="ExStyle" vt="Int16">256</property>
+		<property name="Version" vt="String">1.04</property>
+		<property name="FormOptOnEvent" vt="False">False</property>
+		<property name="FormOptExpVars" vt="False">False</property>
+		<property name="FormOptPopulate" vt="False">False</property>
+		<property name="FormOptVarsForSet" vt="False">False</property>
+		<property name="FormOptIndentChar" vt="Int8">0</property>
+		<property name="FormOptIndentCount" vt="Int8">1</property>
+		<property name="FormOptIndentInit" vt="Int8">0</property>
+		<property name="FormOptVarScope" vt="Int8">0</property>
+		<property name="Resizing" vt="Set"/>
+		<property name="PixelsPerInch" vt="Int8">96</property>
+		<property name="TextHeight" vt="Int8">13</property>
+	</properties>
+	<components>
+		<object type="TAGroup" name="groupHand">
+			<properties>
+				<property name="Left" vt="Int8">8</property>
+				<property name="Top" vt="Int8">0</property>
+				<property name="Width" vt="Int16">849</property>
+				<property name="Height" vt="Int16">281</property>
+				<property name="CtrlStyle" vt="Int32">1342308359</property>
+				<property name="CtrlExStyle" vt="Int8">0</property>
+				<property name="Caption" vt="String">Hand</property>
+				<property name="TabOrder" vt="Int8">0</property>
+				<property name="Resizing" vt="Set"/>
+			</properties>
+			<components>
+				<object type="TAPic" name="piTile1">
+					<properties>
+						<property name="Left" vt="Int8">16</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">0</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="piTile2">
+					<properties>
+						<property name="Left" vt="Int8">80</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="TabOrder" vt="Int8">1</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="piTile3">
+					<properties>
+						<property name="Left" vt="Int16">144</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="TabOrder" vt="Int8">2</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="piTile4">
+					<properties>
+						<property name="Left" vt="Int16">208</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="TabOrder" vt="Int8">3</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="piTile5">
+					<properties>
+						<property name="Left" vt="Int8">16</property>
+						<property name="Top" vt="Int16">136</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="TabOrder" vt="Int8">4</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="piTile6">
+					<properties>
+						<property name="Left" vt="Int8">80</property>
+						<property name="Top" vt="Int16">136</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="TabOrder" vt="Int8">5</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="piTile7">
+					<properties>
+						<property name="Left" vt="Int16">144</property>
+						<property name="Top" vt="Int16">136</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="TabOrder" vt="Int8">6</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="piTile8">
+					<properties>
+						<property name="Left" vt="Int16">208</property>
+						<property name="Top" vt="Int16">136</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="TabOrder" vt="Int8">7</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="piTile9">
+					<properties>
+						<property name="Left" vt="Int16">296</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="TabOrder" vt="Int8">8</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="piTile10">
+					<properties>
+						<property name="Left" vt="Int16">360</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="TabOrder" vt="Int8">9</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="piTIle11">
+					<properties>
+						<property name="Left" vt="Int16">424</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="TabOrder" vt="Int8">10</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="piTIle12">
+					<properties>
+						<property name="Left" vt="Int16">488</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="TabOrder" vt="Int8">11</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="piTile13">
+					<properties>
+						<property name="Left" vt="Int16">296</property>
+						<property name="Top" vt="Int16">136</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="TabOrder" vt="Int8">12</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TARadio" name="radioTile1">
+					<properties>
+						<property name="Left" vt="Int8">16</property>
+						<property name="Top" vt="Int8">104</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">17</property>
+						<property name="Caption" vt="String">Tile 1</property>
+						<property name="TabOrder" vt="Int8">13</property>
+						<property name="CtrlStyle" vt="Int32">1342242825</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="Resizing" vt="Set">DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TARadio" name="radioTile2">
+					<properties>
+						<property name="Left" vt="Int8">80</property>
+						<property name="Top" vt="Int8">104</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">17</property>
+						<property name="Caption" vt="String">Tile 2</property>
+						<property name="TabOrder" vt="Int8">14</property>
+						<property name="CtrlStyle" vt="Int32">1342242825</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="Resizing" vt="Set">DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TARadio" name="radtioTile3">
+					<properties>
+						<property name="Left" vt="Int16">144</property>
+						<property name="Top" vt="Int8">104</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">17</property>
+						<property name="Caption" vt="String">Tile 3</property>
+						<property name="TabOrder" vt="Int8">15</property>
+						<property name="CtrlStyle" vt="Int32">1342242825</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="Resizing" vt="Set">DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TARadio" name="radioTile4">
+					<properties>
+						<property name="Left" vt="Int16">208</property>
+						<property name="Top" vt="Int8">104</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">17</property>
+						<property name="Caption" vt="String">Tile 4</property>
+						<property name="TabOrder" vt="Int8">16</property>
+						<property name="CtrlStyle" vt="Int32">1342242825</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="Resizing" vt="Set">DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TARadio" name="radioTile5">
+					<properties>
+						<property name="Left" vt="Int8">16</property>
+						<property name="Top" vt="Int16">216</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">17</property>
+						<property name="Caption" vt="String">Tile 5</property>
+						<property name="TabOrder" vt="Int8">17</property>
+						<property name="CtrlStyle" vt="Int32">1342242825</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="Resizing" vt="Set">DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TARadio" name="radioTile6">
+					<properties>
+						<property name="Left" vt="Int8">80</property>
+						<property name="Top" vt="Int16">216</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">17</property>
+						<property name="Caption" vt="String">Tile 6</property>
+						<property name="TabOrder" vt="Int8">18</property>
+						<property name="CtrlStyle" vt="Int32">1342242825</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="Resizing" vt="Set">DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TARadio" name="radioTile7">
+					<properties>
+						<property name="Left" vt="Int16">144</property>
+						<property name="Top" vt="Int16">216</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">17</property>
+						<property name="Caption" vt="String">Tile 7</property>
+						<property name="TabOrder" vt="Int8">19</property>
+						<property name="CtrlStyle" vt="Int32">1342242825</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="Resizing" vt="Set">DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TARadio" name="radioTile8">
+					<properties>
+						<property name="Left" vt="Int16">208</property>
+						<property name="Top" vt="Int16">216</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">17</property>
+						<property name="Caption" vt="String">Tile 8</property>
+						<property name="TabOrder" vt="Int8">20</property>
+						<property name="CtrlStyle" vt="Int32">1342242825</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="Resizing" vt="Set">DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TARadio" name="radioTile9">
+					<properties>
+						<property name="Left" vt="Int16">296</property>
+						<property name="Top" vt="Int8">104</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">17</property>
+						<property name="Caption" vt="String">Tile 9</property>
+						<property name="TabOrder" vt="Int8">21</property>
+						<property name="CtrlStyle" vt="Int32">1342242825</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="Resizing" vt="Set">DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TARadio" name="radioTile10">
+					<properties>
+						<property name="Left" vt="Int16">360</property>
+						<property name="Top" vt="Int8">104</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">17</property>
+						<property name="Caption" vt="String">Tile 10</property>
+						<property name="TabOrder" vt="Int8">22</property>
+						<property name="CtrlStyle" vt="Int32">1342242825</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="Resizing" vt="Set">DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TARadio" name="radioTile11">
+					<properties>
+						<property name="Left" vt="Int16">424</property>
+						<property name="Top" vt="Int8">104</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">17</property>
+						<property name="Caption" vt="String">Tile 11</property>
+						<property name="TabOrder" vt="Int8">23</property>
+						<property name="CtrlStyle" vt="Int32">1342242825</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="Resizing" vt="Set">DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TARadio" name="radioTile12">
+					<properties>
+						<property name="Left" vt="Int16">488</property>
+						<property name="Top" vt="Int8">104</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">17</property>
+						<property name="Caption" vt="String">Tile 12</property>
+						<property name="TabOrder" vt="Int8">24</property>
+						<property name="CtrlStyle" vt="Int32">1342242825</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="Resizing" vt="Set">DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TARadio" name="radioTile13">
+					<properties>
+						<property name="Left" vt="Int16">296</property>
+						<property name="Top" vt="Int16">216</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">17</property>
+						<property name="Caption" vt="String">Tile 13</property>
+						<property name="TabOrder" vt="Int8">25</property>
+						<property name="CtrlStyle" vt="Int32">1342242825</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="Resizing" vt="Set">DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="piTile14">
+					<properties>
+						<property name="Left" vt="Int16">360</property>
+						<property name="Top" vt="Int16">136</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="TabOrder" vt="Int8">26</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="piTile15">
+					<properties>
+						<property name="Left" vt="Int16">424</property>
+						<property name="Top" vt="Int16">136</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="TabOrder" vt="Int8">27</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="piTile16">
+					<properties>
+						<property name="Left" vt="Int16">488</property>
+						<property name="Top" vt="Int16">136</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="TabOrder" vt="Int8">28</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TARadio" name="radioTile14">
+					<properties>
+						<property name="Left" vt="Int16">360</property>
+						<property name="Top" vt="Int16">216</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">17</property>
+						<property name="Caption" vt="String">Tile 14</property>
+						<property name="TabOrder" vt="Int8">29</property>
+						<property name="CtrlStyle" vt="Int32">1342242825</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="Resizing" vt="Set">DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TARadio" name="radioTile15">
+					<properties>
+						<property name="Left" vt="Int16">424</property>
+						<property name="Top" vt="Int16">216</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">17</property>
+						<property name="Caption" vt="String">Tile 15</property>
+						<property name="TabOrder" vt="Int8">30</property>
+						<property name="CtrlStyle" vt="Int32">1342242825</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="Resizing" vt="Set">DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TARadio" name="radioTile16">
+					<properties>
+						<property name="Left" vt="Int16">488</property>
+						<property name="Top" vt="Int16">216</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">17</property>
+						<property name="Caption" vt="String">Tile 16</property>
+						<property name="TabOrder" vt="Int8">31</property>
+						<property name="CtrlStyle" vt="Int32">1342242825</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="Resizing" vt="Set">DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="piTile17">
+					<properties>
+						<property name="Left" vt="Int16">576</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="TabOrder" vt="Int8">32</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="piTile18">
+					<properties>
+						<property name="Left" vt="Int16">576</property>
+						<property name="Top" vt="Int16">136</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="TabOrder" vt="Int8">33</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TARadio" name="radioTile17">
+					<properties>
+						<property name="Left" vt="Int16">576</property>
+						<property name="Top" vt="Int8">104</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">17</property>
+						<property name="Caption" vt="String">Tile 17</property>
+						<property name="TabOrder" vt="Int8">34</property>
+						<property name="CtrlStyle" vt="Int32">1342242825</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="Resizing" vt="Set">DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TARadio" name="radioTile18">
+					<properties>
+						<property name="Left" vt="Int16">576</property>
+						<property name="Top" vt="Int16">216</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">17</property>
+						<property name="Caption" vt="String">Tile 18</property>
+						<property name="TabOrder" vt="Int8">35</property>
+						<property name="CtrlStyle" vt="Int32">1342242825</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="Resizing" vt="Set">DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAGroup" name="groupSituations">
+					<properties>
+						<property name="Left" vt="Int16">640</property>
+						<property name="Top" vt="Int8">0</property>
+						<property name="Width" vt="Int16">209</property>
+						<property name="Height" vt="Int16">273</property>
+						<property name="CtrlStyle" vt="Int32">1342308359</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="Caption" vt="String">Yaku(man) Situations</property>
+						<property name="TabOrder" vt="Int8">36</property>
+						<property name="Resizing" vt="Set"/>
+					</properties>
+					<components>
+						<object type="TACombo" name="comboRoundWind">
+							<properties>
+								<property name="Left" vt="Int8">32</property>
+								<property name="Top" vt="Int8">24</property>
+								<property name="Width" vt="Int16">145</property>
+								<property name="Height" vt="Int8">25</property>
+								<property name="ItemHeight" vt="Int8">13</property>
+								<property name="TabOrder" vt="Int8">0</property>
+								<property name="Text" vt="String">Round Wind</property>
+								<property name="CtrlStyle" vt="Int32">1342374466</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACombo" name="comboSeatWind">
+							<properties>
+								<property name="Left" vt="Int8">32</property>
+								<property name="Top" vt="Int8">56</property>
+								<property name="Width" vt="Int16">145</property>
+								<property name="Height" vt="Int8">25</property>
+								<property name="ItemHeight" vt="Int8">13</property>
+								<property name="TabOrder" vt="Int8">1</property>
+								<property name="Text" vt="String">Seat Wind</property>
+								<property name="CtrlStyle" vt="Int32">1342374466</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="checkboxTsumo">
+							<properties>
+								<property name="Left" vt="Int8">16</property>
+								<property name="Top" vt="Int8">88</property>
+								<property name="Width" vt="Int8">89</property>
+								<property name="Height" vt="Int8">17</property>
+								<property name="Caption" vt="String">Menzen Tsumo</property>
+								<property name="TabOrder" vt="Int8">2</property>
+								<property name="CtrlStyle" vt="Int32">1342242819</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="checkboxRiichi">
+							<properties>
+								<property name="Left" vt="Int16">128</property>
+								<property name="Top" vt="Int8">88</property>
+								<property name="Width" vt="Int8">49</property>
+								<property name="Height" vt="Int8">17</property>
+								<property name="Caption" vt="String">Riichi</property>
+								<property name="TabOrder" vt="Int8">3</property>
+								<property name="CtrlStyle" vt="Int32">1342242819</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="checkboxDoubleRiichi">
+							<properties>
+								<property name="Left" vt="Int8">16</property>
+								<property name="Top" vt="Int8">112</property>
+								<property name="Width" vt="Int8">89</property>
+								<property name="Height" vt="Int8">17</property>
+								<property name="Caption" vt="String">Double Riichi</property>
+								<property name="TabOrder" vt="Int8">4</property>
+								<property name="CtrlStyle" vt="Int32">1342242819</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="checkboxIppatsu">
+							<properties>
+								<property name="Left" vt="Int16">128</property>
+								<property name="Top" vt="Int8">112</property>
+								<property name="Width" vt="Int8">57</property>
+								<property name="Height" vt="Int8">17</property>
+								<property name="Caption" vt="String">Ippatsu</property>
+								<property name="TabOrder" vt="Int8">5</property>
+								<property name="CtrlStyle" vt="Int32">1342242819</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="checkboxHaiteiRaoyue">
+							<properties>
+								<property name="Left" vt="Int8">16</property>
+								<property name="Top" vt="Int16">136</property>
+								<property name="Width" vt="Int8">97</property>
+								<property name="Height" vt="Int8">17</property>
+								<property name="Caption" vt="String">Haitei Raoyue</property>
+								<property name="TabOrder" vt="Int8">6</property>
+								<property name="CtrlStyle" vt="Int32">1342242819</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="checkboxHouteiRaoyui">
+							<properties>
+								<property name="Left" vt="Int8">16</property>
+								<property name="Top" vt="Int16">160</property>
+								<property name="Width" vt="Int8">97</property>
+								<property name="Height" vt="Int8">17</property>
+								<property name="Caption" vt="String">Houtei Raoyui</property>
+								<property name="TabOrder" vt="Int8">7</property>
+								<property name="CtrlStyle" vt="Int32">1342242819</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="checkboxRinshan">
+							<properties>
+								<property name="Left" vt="Int8">16</property>
+								<property name="Top" vt="Int16">184</property>
+								<property name="Width" vt="Int8">97</property>
+								<property name="Height" vt="Int8">17</property>
+								<property name="Caption" vt="String">Rinshan kaihou</property>
+								<property name="TabOrder" vt="Int8">8</property>
+								<property name="CtrlStyle" vt="Int32">1342242819</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="checkboxChankan">
+							<properties>
+								<property name="Left" vt="Int16">128</property>
+								<property name="Top" vt="Int16">136</property>
+								<property name="Width" vt="Int8">65</property>
+								<property name="Height" vt="Int8">17</property>
+								<property name="Caption" vt="String">Chankan</property>
+								<property name="TabOrder" vt="Int8">9</property>
+								<property name="CtrlStyle" vt="Int32">1342242819</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="checkboxNagashiMangan">
+							<properties>
+								<property name="Left" vt="Int8">16</property>
+								<property name="Top" vt="Int16">208</property>
+								<property name="Width" vt="Int8">97</property>
+								<property name="Height" vt="Int8">17</property>
+								<property name="Caption" vt="String">Nagashi Mangan</property>
+								<property name="TabOrder" vt="Int8">10</property>
+								<property name="CtrlStyle" vt="Int32">1342242819</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="checkboxTenhou">
+							<properties>
+								<property name="Left" vt="Int16">128</property>
+								<property name="Top" vt="Int16">160</property>
+								<property name="Width" vt="Int8">57</property>
+								<property name="Height" vt="Int8">17</property>
+								<property name="Caption" vt="String">Tenhou</property>
+								<property name="TabOrder" vt="Int8">11</property>
+								<property name="CtrlStyle" vt="Int32">1342242819</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="checkboxChiihou">
+							<properties>
+								<property name="Left" vt="Int16">128</property>
+								<property name="Top" vt="Int16">184</property>
+								<property name="Width" vt="Int8">57</property>
+								<property name="Height" vt="Int8">17</property>
+								<property name="Caption" vt="String">Chiihou</property>
+								<property name="TabOrder" vt="Int8">12</property>
+								<property name="CtrlStyle" vt="Int32">1342242819</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="checkboxRenhou">
+							<properties>
+								<property name="Left" vt="Int16">128</property>
+								<property name="Top" vt="Int16">208</property>
+								<property name="Width" vt="Int8">97</property>
+								<property name="Height" vt="Int8">17</property>
+								<property name="Caption" vt="String">Renhou</property>
+								<property name="TabOrder" vt="Int8">13</property>
+								<property name="CtrlStyle" vt="Int32">1342242819</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAInput" name="inputPoints">
+							<properties>
+								<property name="Left" vt="Int8">16</property>
+								<property name="Top" vt="Int16">240</property>
+								<property name="Width" vt="Int16">177</property>
+								<property name="Height" vt="Int8">21</property>
+								<property name="TabOrder" vt="Int8">14</property>
+								<property name="Text" vt="String">non-Dealer price / Dealer price</property>
+								<property name="CtrlStyle" vt="Int32">1342374017</property>
+								<property name="CtrlExStyle" vt="Int16">512</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+					</components>
+				</object>
+				<object type="TAButton" name="bDone">
+					<properties>
+						<property name="Left" vt="Int16">576</property>
+						<property name="Top" vt="Int16">240</property>
+						<property name="Width" vt="Int8">51</property>
+						<property name="Height" vt="Int8">25</property>
+						<property name="Caption" vt="String">Done</property>
+						<property name="TabOrder" vt="Int8">37</property>
+						<property name="Color" vt="Ident">clBtnFace</property>
+						<property name="CtrlStyle" vt="Int32">1342373888</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+			</components>
+		</object>
+		<object type="TAGroup" name="groupTiles">
+			<properties>
+				<property name="Left" vt="Int8">8</property>
+				<property name="Top" vt="Int16">328</property>
+				<property name="Width" vt="Int16">849</property>
+				<property name="Height" vt="Int16">289</property>
+				<property name="CtrlStyle" vt="Int32">1342308359</property>
+				<property name="CtrlExStyle" vt="Int8">0</property>
+				<property name="Caption" vt="String">Base Tiles</property>
+				<property name="TabOrder" vt="Int8">1</property>
+				<property name="Resizing" vt="Set"/>
+			</properties>
+			<components>
+				<object type="TAPic" name="man1">
+					<properties>
+						<property name="Left" vt="Int8">16</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">0</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="man2">
+					<properties>
+						<property name="Left" vt="Int8">80</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">1</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="man3">
+					<properties>
+						<property name="Left" vt="Int16">144</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">2</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="man4">
+					<properties>
+						<property name="Left" vt="Int16">208</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">3</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="man5">
+					<properties>
+						<property name="Left" vt="Int16">272</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">4</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="man6">
+					<properties>
+						<property name="Left" vt="Int16">336</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">5</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="man7">
+					<properties>
+						<property name="Left" vt="Int16">400</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">6</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="man8">
+					<properties>
+						<property name="Left" vt="Int16">464</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">7</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="man9">
+					<properties>
+						<property name="Left" vt="Int16">528</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">8</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="sou1">
+					<properties>
+						<property name="Left" vt="Int8">16</property>
+						<property name="Top" vt="Int8">112</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">9</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="sou2">
+					<properties>
+						<property name="Left" vt="Int8">80</property>
+						<property name="Top" vt="Int8">112</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">10</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="sou3">
+					<properties>
+						<property name="Left" vt="Int16">144</property>
+						<property name="Top" vt="Int8">112</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">11</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="sou4">
+					<properties>
+						<property name="Left" vt="Int16">208</property>
+						<property name="Top" vt="Int8">112</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">12</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="sou5">
+					<properties>
+						<property name="Left" vt="Int16">272</property>
+						<property name="Top" vt="Int8">112</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">13</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="sou6">
+					<properties>
+						<property name="Left" vt="Int16">336</property>
+						<property name="Top" vt="Int8">112</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">14</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="sou7">
+					<properties>
+						<property name="Left" vt="Int16">400</property>
+						<property name="Top" vt="Int8">112</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">15</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="sou8">
+					<properties>
+						<property name="Left" vt="Int16">464</property>
+						<property name="Top" vt="Int8">112</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">16</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="sou9">
+					<properties>
+						<property name="Left" vt="Int16">528</property>
+						<property name="Top" vt="Int8">112</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">17</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAGroup" name="Group1">
+					<properties>
+						<property name="Left" vt="Int16">592</property>
+						<property name="Top" vt="Int8">0</property>
+						<property name="Width" vt="Int16">257</property>
+						<property name="Height" vt="Int16">289</property>
+						<property name="CtrlStyle" vt="Int32">1342308359</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="Caption" vt="String">Characters / Red Dora</property>
+						<property name="TabOrder" vt="Int8">18</property>
+						<property name="Resizing" vt="Set"/>
+					</properties>
+					<components>
+						<object type="TAPic" name="ton">
+							<properties>
+								<property name="Left" vt="Int8">8</property>
+								<property name="Top" vt="Int8">24</property>
+								<property name="Width" vt="Int8">49</property>
+								<property name="Height" vt="Int8">73</property>
+								<property name="CtrlStyle" vt="Int32">1342308622</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+								<property name="TabOrder" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAPic" name="nan">
+							<properties>
+								<property name="Left" vt="Int8">72</property>
+								<property name="Top" vt="Int8">24</property>
+								<property name="Width" vt="Int8">49</property>
+								<property name="Height" vt="Int8">73</property>
+								<property name="CtrlStyle" vt="Int32">1342308622</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+								<property name="TabOrder" vt="Int8">1</property>
+								<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAPic" name="shaa">
+							<properties>
+								<property name="Left" vt="Int16">136</property>
+								<property name="Top" vt="Int8">24</property>
+								<property name="Width" vt="Int8">49</property>
+								<property name="Height" vt="Int8">73</property>
+								<property name="CtrlStyle" vt="Int32">1342308622</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+								<property name="TabOrder" vt="Int8">2</property>
+								<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAPic" name="pei">
+							<properties>
+								<property name="Left" vt="Int16">200</property>
+								<property name="Top" vt="Int8">24</property>
+								<property name="Width" vt="Int8">49</property>
+								<property name="Height" vt="Int8">73</property>
+								<property name="CtrlStyle" vt="Int32">1342308622</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+								<property name="TabOrder" vt="Int8">3</property>
+								<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAPic" name="chun">
+							<properties>
+								<property name="Left" vt="Int8">32</property>
+								<property name="Top" vt="Int8">112</property>
+								<property name="Width" vt="Int8">49</property>
+								<property name="Height" vt="Int8">73</property>
+								<property name="CtrlStyle" vt="Int32">1342308622</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+								<property name="TabOrder" vt="Int8">4</property>
+								<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAPic" name="haku">
+							<properties>
+								<property name="Left" vt="Int8">104</property>
+								<property name="Top" vt="Int8">112</property>
+								<property name="Width" vt="Int8">49</property>
+								<property name="Height" vt="Int8">73</property>
+								<property name="CtrlStyle" vt="Int32">1342308622</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+								<property name="TabOrder" vt="Int8">5</property>
+								<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAPic" name="hatsu">
+							<properties>
+								<property name="Left" vt="Int16">176</property>
+								<property name="Top" vt="Int8">112</property>
+								<property name="Width" vt="Int8">49</property>
+								<property name="Height" vt="Int8">73</property>
+								<property name="CtrlStyle" vt="Int32">1342308622</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+								<property name="TabOrder" vt="Int8">6</property>
+								<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAPic" name="man5r">
+							<properties>
+								<property name="Left" vt="Int8">32</property>
+								<property name="Top" vt="Int16">200</property>
+								<property name="Width" vt="Int8">49</property>
+								<property name="Height" vt="Int8">73</property>
+								<property name="CtrlStyle" vt="Int32">1342308622</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+								<property name="TabOrder" vt="Int8">7</property>
+								<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAPic" name="sou5r">
+							<properties>
+								<property name="Left" vt="Int8">104</property>
+								<property name="Top" vt="Int16">200</property>
+								<property name="Width" vt="Int8">49</property>
+								<property name="Height" vt="Int8">73</property>
+								<property name="CtrlStyle" vt="Int32">1342308622</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+								<property name="TabOrder" vt="Int8">8</property>
+								<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAPic" name="pin5r">
+							<properties>
+								<property name="Left" vt="Int16">176</property>
+								<property name="Top" vt="Int16">200</property>
+								<property name="Width" vt="Int8">49</property>
+								<property name="Height" vt="Int8">73</property>
+								<property name="CtrlStyle" vt="Int32">1342308622</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+								<property name="TabOrder" vt="Int8">9</property>
+								<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+					</components>
+				</object>
+				<object type="TAPic" name="pin1">
+					<properties>
+						<property name="Left" vt="Int8">16</property>
+						<property name="Top" vt="Int16">200</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">19</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="pin2">
+					<properties>
+						<property name="Left" vt="Int8">80</property>
+						<property name="Top" vt="Int16">200</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">20</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="pin3">
+					<properties>
+						<property name="Left" vt="Int16">144</property>
+						<property name="Top" vt="Int16">200</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">21</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="pin4">
+					<properties>
+						<property name="Left" vt="Int16">208</property>
+						<property name="Top" vt="Int16">200</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">22</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="pin5">
+					<properties>
+						<property name="Left" vt="Int16">272</property>
+						<property name="Top" vt="Int16">200</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">23</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="pin6">
+					<properties>
+						<property name="Left" vt="Int16">336</property>
+						<property name="Top" vt="Int16">200</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">24</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="pin7">
+					<properties>
+						<property name="Left" vt="Int16">400</property>
+						<property name="Top" vt="Int16">200</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">25</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="pin8">
+					<properties>
+						<property name="Left" vt="Int16">464</property>
+						<property name="Top" vt="Int16">200</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">26</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="pin9">
+					<properties>
+						<property name="Left" vt="Int16">528</property>
+						<property name="Top" vt="Int16">200</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">27</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+			</components>
+		</object>
+		<object type="TAButton" name="bOpenSet1">
+			<properties>
+				<property name="Left" vt="Int8">24</property>
+				<property name="Top" vt="Int16">240</property>
+				<property name="Width" vt="Int8">65</property>
+				<property name="Height" vt="Int8">25</property>
+				<property name="Caption" vt="String">1-4 Open</property>
+				<property name="TabOrder" vt="Int8">2</property>
+				<property name="Color" vt="Ident">clBtnFace</property>
+				<property name="CtrlStyle" vt="Int32">1342373888</property>
+				<property name="CtrlExStyle" vt="Int8">0</property>
+				<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+			</properties>
+			<components/>
+		</object>
+		<object type="TAButton" name="bOpenSet2">
+			<properties>
+				<property name="Left" vt="Int16">200</property>
+				<property name="Top" vt="Int16">240</property>
+				<property name="Width" vt="Int8">65</property>
+				<property name="Height" vt="Int8">25</property>
+				<property name="Caption" vt="String">5-8 Open</property>
+				<property name="TabOrder" vt="Int8">3</property>
+				<property name="Color" vt="Ident">clBtnFace</property>
+				<property name="CtrlStyle" vt="Int32">1342373888</property>
+				<property name="CtrlExStyle" vt="Int8">0</property>
+				<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+			</properties>
+			<components/>
+		</object>
+		<object type="TAButton" name="bOpenSet3">
+			<properties>
+				<property name="Left" vt="Int16">304</property>
+				<property name="Top" vt="Int16">240</property>
+				<property name="Width" vt="Int8">65</property>
+				<property name="Height" vt="Int8">25</property>
+				<property name="Caption" vt="String">9-12 Open</property>
+				<property name="TabOrder" vt="Int8">4</property>
+				<property name="Color" vt="Ident">clBtnFace</property>
+				<property name="CtrlStyle" vt="Int32">1342373888</property>
+				<property name="CtrlExStyle" vt="Int8">0</property>
+				<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+			</properties>
+			<components/>
+		</object>
+		<object type="TAButton" name="bOpenSet4">
+			<properties>
+				<property name="Left" vt="Int16">480</property>
+				<property name="Top" vt="Int16">240</property>
+				<property name="Width" vt="Int8">65</property>
+				<property name="Height" vt="Int8">25</property>
+				<property name="Caption" vt="String">13-16 Open</property>
+				<property name="TabOrder" vt="Int8">5</property>
+				<property name="Color" vt="Ident">clBtnFace</property>
+				<property name="CtrlStyle" vt="Int32">1342373888</property>
+				<property name="CtrlExStyle" vt="Int8">0</property>
+				<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+			</properties>
+			<components/>
+		</object>
+		<object type="TAInput" name="fullNameOfHand">
+			<properties>
+				<property name="Left" vt="Int8">8</property>
+				<property name="Top" vt="Int16">296</property>
+				<property name="Width" vt="Int16">849</property>
+				<property name="Height" vt="Int8">21</property>
+				<property name="TabOrder" vt="Int8">6</property>
+				<property name="Text" vt="String">Full name of Hand</property>
+				<property name="CtrlStyle" vt="Int32">1342374017</property>
+				<property name="CtrlExStyle" vt="Int16">512</property>
+				<property name="Resizing" vt="Set">DockHeight</property>
+			</properties>
+			<components/>
+		</object>
+		<object type="TAGroup" name="groupDoraIndicators">
+			<properties>
+				<property name="Left" vt="Int8">8</property>
+				<property name="Top" vt="Int16">624</property>
+				<property name="Width" vt="Int16">849</property>
+				<property name="Height" vt="Int8">105</property>
+				<property name="CtrlStyle" vt="Int32">1342308359</property>
+				<property name="CtrlExStyle" vt="Int8">0</property>
+				<property name="Caption" vt="String">Dora Indicators</property>
+				<property name="TabOrder" vt="Int8">7</property>
+				<property name="Resizing" vt="Set"/>
+			</properties>
+			<components>
+				<object type="TAPic" name="dora1">
+					<properties>
+						<property name="Left" vt="Int8">16</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">0</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="dora2">
+					<properties>
+						<property name="Left" vt="Int8">80</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">1</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="dora3">
+					<properties>
+						<property name="Left" vt="Int16">144</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">2</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="dora4">
+					<properties>
+						<property name="Left" vt="Int16">208</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">3</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="dora5">
+					<properties>
+						<property name="Left" vt="Int16">272</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">4</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="dora6">
+					<properties>
+						<property name="Left" vt="Int16">336</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">5</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="dora7">
+					<properties>
+						<property name="Left" vt="Int16">400</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">6</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="dora8">
+					<properties>
+						<property name="Left" vt="Int16">464</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">7</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="dora9">
+					<properties>
+						<property name="Left" vt="Int16">528</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">8</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="dora10">
+					<properties>
+						<property name="Left" vt="Int16">592</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">9</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="dora11">
+					<properties>
+						<property name="Left" vt="Int16">656</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">10</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="dora12">
+					<properties>
+						<property name="Left" vt="Int16">720</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">11</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TAPic" name="dora13">
+					<properties>
+						<property name="Left" vt="Int16">784</property>
+						<property name="Top" vt="Int8">24</property>
+						<property name="Width" vt="Int8">49</property>
+						<property name="Height" vt="Int8">73</property>
+						<property name="CtrlStyle" vt="Int32">1342308622</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="PicturePath" vt="String">Z:\Mahjong Counter [AUTOIT]\Tiles\null.png</property>
+						<property name="TabOrder" vt="Int8">12</property>
+						<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+			</components>
+		</object>
+		<object type="TAInput" name="debug">
+			<properties>
+				<property name="Left" vt="Int8">8</property>
+				<property name="Top" vt="Int16">736</property>
+				<property name="Width" vt="Int16">849</property>
+				<property name="Height" vt="Int8">21</property>
+				<property name="TabOrder" vt="Int8">8</property>
+				<property name="Text" vt="String">Debug Messages, Ignore this :) (or don't I don't care,)</property>
+				<property name="CtrlStyle" vt="Int32">1342374016</property>
+				<property name="CtrlExStyle" vt="Int16">512</property>
+				<property name="Resizing" vt="Set">DockHeight</property>
+			</properties>
+			<components/>
+		</object>
+	</components>
+</object>
