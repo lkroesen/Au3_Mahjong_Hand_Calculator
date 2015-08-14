@@ -222,8 +222,9 @@ for $i = 1 to 9 Step 1
    elseif $msg == $pin[$i] Then
 	  GUICtrlSetData($debug, "Clicked on Pin " & $i)
 	  RecreateHandTile($changeOrigin, $pin[$i])
-
-   elseif $msg == $ton Then
+   EndIf
+   Next
+   if $msg == $ton Then
 	  GUICtrlSetData($debug, "Clicked on Ton (East)")
 	  RecreateHandTile($changeOrigin, "ton")
 
@@ -263,8 +264,6 @@ for $i = 1 to 9 Step 1
 	  GUICtrlSetData($debug, "Clicked on Red Pin 5 Dora")
 	  RecreateHandTile($changeOrigin, "p5r")
    EndIf
-
-Next
 EndFunc
 
 ; Hardcoded check to see which picture to delete and then to recreate it again with the new picture
@@ -426,6 +425,7 @@ elseif $tilenum == $dora[13] Then
    $dora[13] = GUICtrlCreatePic(ChangeInto($changeinto), 792, 648, 49, 73)
    $doraValue[13] = assigner($changeinto)
 EndIf
+selectNext()
 EndFunc
 
 ; Assigns numbers to the Hand & Dora arrays, makes it easy to keep track of what is in the hand and dora
@@ -527,8 +527,9 @@ Func ChangeInto($changeinto)
 	  elseif $changeinto == $pin[$i] Then
 		 GUICtrlSetData($debug, "Changed into Pin " & $i & "!")
 		 return "Tiles\pin" & $i & ".bmp"
-
-	  elseif $changeinto == "ton" Then
+	  EndIf
+   Next
+	  if $changeinto == "ton" Then
 		 GUICtrlSetData($debug, "Changed into " & $changeinto & "!")
 		 return "Tiles\" &  $changeinto & ".bmp"
 
@@ -569,7 +570,6 @@ Func ChangeInto($changeinto)
 		 return "Tiles\pin5r.bmp"
 
 	  EndIf
-Next
    return "Tiles\empty.bmp"
 EndFunc
 
