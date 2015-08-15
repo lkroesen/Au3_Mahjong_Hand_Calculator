@@ -121,7 +121,7 @@ $pin[7] = GUICtrlCreatePic("Tiles\pin7.bmp", 408, 528, 49, 73)
 $pin[8] = GUICtrlCreatePic("Tiles\pin8.bmp", 472, 528, 49, 73)
 $pin[9] = GUICtrlCreatePic("Tiles\pin9.bmp", 536, 528, 49, 73)
 
-$groupCharactersDora = GUICtrlCreateGroup("Characters / Red Dora", 600, 328, 257, 289)
+$groupCharactersDora = GUICtrlCreateGroup("Honours / Red Dora", 600, 328, 257, 289)
 
 ; SPECIAL CHARACTERS RED DORA DECLARATIONS;
 $ton = GUICtrlCreatePic("Tiles\ton.bmp", 608, 352, 49, 73)

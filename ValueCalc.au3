@@ -17,21 +17,39 @@ Global $pinfuTrue = 0
 Global $tanyaoTrue = 0
 Global $IipeikouTrue = 0
 Global $YakuhaiTrue = 0
-
+Global $SanshokuDoujinTrue = 0
+Global $IkkitsuukanTrue = 0
+Global $ChantaiyaoTrue = 0
+Global $HonroutouTrue = 0
+Global $bToitoi = False
+Global $bSanankou = False
+Global $bSankantsu = False
+Global $bSanshokudoukou = False
+Global $bShouSangen = False
+Global $bHonitsu = False
+Global $bJunchan = False
+Global $bRyanpeikou = False
+Global $bChinitsu = False
 
 Func Calculate()
    ; Get wind directions off of GUI
-   getWinds()
+   If getWinds() == false Then
+	  GUICtrlSetData($debug, "Calculation aborted due to Winds not initialized")
+	  Return
+   EndIf
+
    $FullHandName = ""
    $han = 0
    $fu = 0
    $nYaku = 0
 
    ; Seven Pairs Exception
+   ; Honroutou possible (if it is then it's called: Honroochiitoi) TODO ADD DETECT
+   ; Tsuu iisou possible (Yakuman)
    If $SevenPairsEnabled == 1 Then
 	  $han += 2
 	  $nYaku += 1
-	  ; TODO additional calculations?
+	  ; TODO additional calculations
 	  $FullHandName &= " Chiitoitsu "
 	  $FullHandName &= " [Han: " & $han & " Fu: " & $fu & "]"
 	  $FullHandName &= "   Amount of Yaku: " & $nYaku
@@ -49,6 +67,13 @@ Func Calculate()
    Tanyao()
    Iipeikou()
    Yakuhai()
+   Sanshoku_Doujin()
+   Ikkitsuukan()
+   Chantaiyao()
+   Honroutou()
+   ToiToi()
+   Sanankou()
+   Sankantsu()
    ; End yaku
 
    ; Check for Pinfu / No Point
@@ -80,16 +105,283 @@ Func Calculate()
 	  $FullHandName &= "Yakuhai "
 	  $nYaku += 1
    EndIf
+   ; Check for Sanshoku
+   If $SanshokuDoujinTrue == 1 Then
 
+	  if Concealed() == -1 Then
+		 $han+=1
+	  Else
+		 $han+=2
+	  EndIf
+
+	  $FullHandName &= "San Shoku "
+	  $nYaku += 1
+   EndIf
+   ; Check for Ikkitsuukan
+   If $IkkitsuukanTrue == 1 Then
+	  if Concealed() == -1 Then
+		 $han+=1
+	  Else
+		 $han+=2
+	  EndIf
+
+	  $FullHandName &= "Ikkitsuukan "
+	  $nYaku+=1
+   EndIf
+   ; Check for Chantaiyao
+   If $ChantaiyaoTrue == 1 Then
+	  if Concealed() == -1 Then
+		 $han+=1
+	  Else
+		 $han+=2
+	  EndIf
+
+	  $FullHandName &= "Chantaiyao "
+	  $nYaku+=1
+   EndIf
+   ; Check for Honroutou
+   If $HonroutouTrue == 1 Then
+	  $han+=2
+	  $FullHandName &= "Honroutou "
+	  $nYaku+=1
+   EndIf
+
+   ; Check for ToiToi
+   If $bToiToi == True Then
+	  $han+=2
+	  $FullHandName &= "Toi Toi "
+	  $nYaku+=1
+   EndIf
+
+   ; Check for Sanankou
+   If $bSanankou == True Then
+	  $han+=2
+	  $FullHandName &= "Sanankou "
+	  $nYaku+=1
+   EndIf
+
+   ; Check for Sankantsu
+   If $bSankantsu == True Then
+	  $han+=2
+	  $FullHandName &= "Sankantsu "
+	  $nYaku+=1
+   EndIf
 
    $FullHandName &= " [Han: " & $han & " Fu: " & $fu & "]"
    $FullHandName &= "   Amount of Yaku: " & $nYaku
    GUICtrlSetData($fullNameOfHand, $FullHandName)
 EndFunc
 
+; Sankantsu 3x pon/kan
+Func Sankantsu()
+   $bSankantsu = False
+
+   $nKan = 0
+
+   for $i = 0 to 3 Step 1
+	  if $set[$i] >= 80 and $set[$i] <= 199 Then
+		 $nKan += 1
+	  EndIf
+   Next
+
+   if $nKan >= 3 Then
+	  $bSankantsu = True
+   EndIf
+
+EndFunc
+
+; Sanankou / Three Concealed Trips
+Func Sanankou()
+   $bSanankou = False
+
+   ; Find sets that have pon/kan
+   Local $s[4] = [False, False, False, False]
+
+   for $i = 0 to 3 Step 1
+	  if $set[$i] >= 40 and $set[$i] <= 199 Then
+		 $s[$i] = True
+	  else
+		 $s[$i] = False
+	  EndIf
+   Next
+
+   $requirement = 0
+   for $i = 0 to 3 Step 1
+	  if $s[$i] == True and $setsThatAreOpen[$i+1] == 0 Then
+		 $requirement += 1
+	  EndIf
+   Next
+
+   If $requirement >= 3 Then
+	  $bSanankou = True
+	  return
+   EndIf
+
+   $bSanankou = False
+EndFunc
+
+; Toi Toi 3x pon/kan
+Func ToiToi()
+   $bToiToi = False
+
+   if NoChi() == -1 Then
+	  $bToiToi = False
+	  return
+   EndIf
+
+   for $i = 0 to 3 Step 1
+	  if $set[$i] >= 40 and $set[$i] <= 199 Then
+		 $bToiToi = True
+	  else
+		 $bToiToi = False
+	  EndIf
+   Next
+EndFunc
+
+; Honroutou / All terminals and/or honours
+Func Honroutou()
+   $HonroutouTrue = 0
+
+   ; Search through hand for non-terminals and honours
+   for $i = 1 to 18 Step 1
+	  if $hand[$i] = "empty" OR $hand[$i] == $cMAN1 OR $hand[$i] == $cMAN9 OR $hand[$i] == $cSOU1 OR $hand[$i] == $cSOU9 OR $hand[$i] == $cPIN1 OR $hand[$i] == $cPIN9 OR $hand[$i] == $cTON OR $hand[$i] == $cNAN OR $hand[$i] == $cSHAA OR $hand[$i] == $cPEI OR $hand[$i] == $cCHUN OR $hand[$i] == $cHAKU OR $hand[$i] == $cHATSU Then
+		 $HonroutouTrue = 1
+	  Else
+		 $HonroutouTrue = 0
+		 return
+	  EndIf
+   Next
+EndFunc
+
+; Chantaiyao / Terminal or honor in each Set
+; Must be concealed: no
+; Han: 2 / 1 if not concealed.
+; Every set must have at least one terminal or honour tile,
+; and the pair must be of a terminal or honour tile.
+; Must contain at least one sequence (123 or 789).
+Func Chantaiyao()
+   $ChantaiyaoTrue = 0
+
+   if NoChi() == 1 Then
+	  $ChantaiyaoTrue = 0
+	  return
+   EndIf
+
+   $SetsPasses = 0
+   $Pairpasses = 0
+
+   ; Check for stuff that has honours or terminals in them, cMAN1,CMAN9,cSOU1,cSOU9,cPIN1,cPIN9,cTON,cSHAA,cPEI,cNAN,cHAKU,cHATSU,cCHUN
+   ; Chi:  n1 1-2-3, n7 7-8-9
+   For $f = 10 to 30 Step 10
+	  ;msgbox(0, "ChiOf()", ChiOf($f+1) & ChiOf($f+7))
+	  If ChiOf($f+1) == 1 OR ChiOf($f+7) == 1 Then
+	  ;msgbox(0, "For if chiof passed", $f)
+		 for $i = 0 to 3 Step 1
+			if $set[$i] == 11 OR $set[$i] == 17 OR $set[$i] == 21 OR $set[$i] == 27 OR $set[$i] == 31 OR $set[$i] == 37 OR $set[$i] == 40+$cMAN1 OR $set[$i] == 40+$cMAN9 OR $set[$i] == 40+$cSOU1 OR $set[$i] == 40+$cSOU9 OR $set[$i] == 40 + $cPIN1 OR $set[$i] == 40 + $cPIN9 OR $set[$i] == 80+$cMAN1 OR $set[$i] == 80+$cMAN9 OR $set[$i] == 80+$cSOU1 OR $set[$i] == 80+$cSOU9 OR $set[$i] == 80 + $cPIN1 OR $set[$i] == 80 + $cPIN9 OR $set[$i] == 40+$cTON OR $set[$i] == 40+$cNAN OR $set[$i] == 40+$cSHAA OR $set[$i] == 40+$cPEI OR $set[$i] == 40 + $cCHUN OR $set[$i] == 40 + $cHATSU OR $set[$i] == 40 + $cHAKU OR $set[$i] == 80+$cTON OR $set[$i] == 80+$cNAN OR $set[$i] == 80+$cSHAA OR $set[$i] == 80+$cPEI OR $set[$i] == 80 + $cCHUN OR $set[$i] == 80 + $cHATSU OR $set[$i] == 80 + $cHAKU Then
+			   $SetsPasses = 1
+			   ;msgbox(0, "Set "& $i+1 &" passes", $f)
+			Else
+			   $SetsPasses = 0
+			   ;msgbox(0, "FAILED", "Pair" & $i+1)
+			   $ChantaiyaoTrue = 0
+			   return
+			EndIf
+		 Next
+		 if $set[4] == 200+$cMAN1 OR $set[4] == 200+$cMAN9 OR $set[4] == 200+$cSOU1 OR $set[4] == 200+$cSOU9 OR $set[4] == 200 + $cPIN1 OR $set[4] == 200 + $cPIN9 OR $set[4] == 200+$cTON OR $set[4] == 200+$cNAN OR $set[4] == 200+$cSHAA OR $set[4] == 200+$cPEI OR $set[4] == 200 + $cCHUN OR $set[4] == 200 + $cHATSU OR $set[4] == 200 + $cHAKU Then
+			   $Pairpasses = 1
+			   ;msgbox(0, "Pair1 passes", "Pair1")
+		 EndIf
+	  EndIf
+   Next
+
+   if $SetsPasses == 1 And $Pairpasses == 1 Then
+	  $ChantaiyaoTrue = 1
+	  return
+   EndIf
+
+   $ChantaiyaoTrue = 0
+
+EndFunc
+
+; Ikkitsuukan / Straight
+; 1-2-3 4-5-6 7-8-9 of the same suit
+Func Ikkitsuukan()
+   $IkkitsuukanTrue = 0
+
+   ; Impossible for a straight
+   if NoChi() == 1 Then
+	  $IkkitsuukanTrue = 0
+	  Return
+   EndIf
+
+   ; Ikkitsukan
+   For $i = 10 to 30 Step 10
+   If ChiOf($i+1) == 1 AND ChiOf($i+4) == 1 AND ChiOf($i+7) Then
+	  $IkkitsuukanTrue = 1
+	  return
+   EndIf
+   Next
+   $IkkitsuukanTrue = 0
+EndFunc
+
+; The same sequence in three suits.
+Func Sanshoku_Doujin()
+   $SanshokuDoujinTrue = 0
+
+   ; If there's no Chi then there's no Sanshoku
+   If NoChi() == 1 Then
+	  $SanshokuDoujinTrue = 0
+	  return
+   EndIf
+
+   ; if we find a Chi, search for the other two aswell. (+10 & +20)
+   For $i = 0 to 3 Step 1
+	  if $set[$i] == 11 Then
+		 If ChiOf(21) == 1 AND ChiOf(31) == 1 Then
+			$SanshokuDoujinTrue = 1
+			Return
+		 EndIf
+	  elseif $set[$i] == 12 Then
+		 If ChiOf(22) == 1 AND ChiOf(32) == 1 Then
+			$SanshokuDoujinTrue = 1
+			Return
+		 EndIf
+	  elseif $set[$i] == 13 Then
+		 If ChiOf(23) == 1 AND ChiOf(33) == 1 Then
+			$SanshokuDoujinTrue = 1
+			Return
+		 EndIf
+	  elseif $set[$i] == 14 Then
+		 If ChiOf(24) == 1 AND ChiOf(34) == 1 Then
+			$SanshokuDoujinTrue = 1
+			Return
+		 EndIf
+	  elseif $set[$i] == 15 Then
+		 If ChiOf(25) == 1 AND ChiOf(35) == 1 Then
+			$SanshokuDoujinTrue = 1
+			Return
+		 EndIf
+	  elseif $set[$i] == 16 Then
+		 If ChiOf(26) == 1 AND ChiOf(36) == 1 Then
+			$SanshokuDoujinTrue = 1
+			Return
+		 EndIf
+	  elseif $set[$i] == 17 Then
+		 If ChiOf(27) == 1 AND ChiOf(37) == 1 Then
+			$SanshokuDoujinTrue = 1
+			Return
+		 EndIf
+	  EndIf
+   Next
+
+   $SanshokuDoujinTrue = 0
+
+EndFunc
+
 ; Yakuhai / Fanpai
 ; Dragon(s), Seat Wind or Round Wind, all worth 1 Han per set.
 Func Yakuhai()
+   $YakuhaiTrue = 0
 
    ; Check for Pon or Kan of RoundWind
    If KanOf($rWind) == 1 OR PonOf($rWind) == 1 Then
@@ -292,6 +584,17 @@ Func PonOf($cT)
    return -1
 EndFunc
 
+; Find if a hand has a specific Chi returns 1 if found
+Func ChiOf($chiID)
+
+   for $i = 0 to 3 Step 1
+	  If $set[$i] == $chiID Then
+		 return 1
+	  EndIf
+   Next
+   return -1
+EndFunc
+
 ; Check for Kan, if no Kan returns 1
 Func NoKan()
 	  for $i = 0 to 3 Step 1
@@ -339,6 +642,7 @@ Func getWinds()
 	  $rWind = $cPEI
    Else
 	  MsgBox( 0, "Select a Round Wind!", "Please, select a Round Wind")
+	  return false
    EndIf
 
    if $sWindTemp == "Ton                           East" Then
@@ -351,8 +655,9 @@ Func getWinds()
 	  $sWind = $cPEI
    Else
 	  MsgBox( 0, "Select a Seat Wind!", "Please, select a Seat Wind")
+	  return false
    EndIf
-
+   return true
    ;GUICtrlSetData($debug, "Round wind: " & TileTranslator($rWind) & " Seat Wind: " & TileTranslator($sWind))
 EndFunc
 
