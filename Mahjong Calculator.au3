@@ -5,12 +5,8 @@
 #include <StaticConstants.au3>
 #include <WindowsConstants.au3>
 #include <HandChecker.au3>
-
-HotKeySet("{F1}", "nullifyOriginChange")
-HotKeySet("d", "selectNext")
-HotKeySet("a", "selectPrev")
-HotKeySet("{F9}", "status")
-HotKeySet("{F5}", "Checker")
+#include <HotKeys.au3>
+#include <ValueCalc.au3>
 
 ; Use arrays for GUI elements might be useful later on.
 Global $piTile[19] ; 0 unused
@@ -65,9 +61,11 @@ $radioTile[17] = GUICtrlCreateRadio("Tile 17", 584, 104, 49, 17)
 $radioTile[18] = GUICtrlCreateRadio("Tile 18", 584, 216, 49, 17)
 
 ; COMBO BOXES WINDS ;
-$groupSituations = GUICtrlCreateGroup("Yaku(man) Situations", 648, 0, 209, 273)
+$groupSituations = GUICtrlCreateGroup("Yaku(man) Situations", 648, 0, 209, 281)
 $comboRoundWind = GUICtrlCreateCombo("Round Wind", 680, 24, 145, 25, BitOR($CBS_DROPDOWN,$CBS_AUTOHSCROLL))
+GUICtrlSetData(-1, "Ton                           East|Nan                         South|Shaa                        West|Pei                           North|")
 $comboSeatWind = GUICtrlCreateCombo("Seat Wind", 680, 56, 145, 25, BitOR($CBS_DROPDOWN,$CBS_AUTOHSCROLL))
+GUICtrlSetData(-1, "Ton                           East|Nan                         South|Shaa                        West|Pei                           North|")
 
 ; CHECKBOXES YAKU(MAN) SITUATIONS ;
 $checkboxTsumo = GUICtrlCreateCheckbox("Menzen Tsumo", 664, 88, 89, 17)
@@ -81,7 +79,7 @@ $checkboxChankan = GUICtrlCreateCheckbox("Chankan", 776, 136, 65, 17)
 $checkboxNagashiMangan = GUICtrlCreateCheckbox("Nagashi Mangan", 664, 208, 97, 17)
 $checkboxTenhou = GUICtrlCreateCheckbox("Tenhou", 776, 160, 57, 17)
 $checkboxChiihou = GUICtrlCreateCheckbox("Chiihou", 776, 184, 57, 17)
-$checkboxRenhou = GUICtrlCreateCheckbox("Renhou", 776, 208, 97, 17)
+$checkboxRenhou = GUICtrlCreateCheckbox("Renhou", 776, 208, 73, 17)
 
 ; POINTS ;
 $inputPoints = GUICtrlCreateInput("non-Dealer price / Dealer price", 664, 240, 177, 21, BitOR($GUI_SS_DEFAULT_INPUT,$ES_CENTER))
@@ -145,7 +143,8 @@ $bOpenSet2 = GUICtrlCreateButton("5-8 Open", 200, 240, 65, 25)
 $bOpenSet3 = GUICtrlCreateButton("9-12 Open", 304, 240, 65, 25)
 $bOpenSet4 = GUICtrlCreateButton("13-16 Open", 480, 240, 65, 25)
 
-$fullNameOfHand = GUICtrlCreateInput("Full name of Hand", 8, 296, 849, 21, BitOR($GUI_SS_DEFAULT_INPUT,$ES_CENTER))
+$fullNameOfHand = GUICtrlCreateInput("Full name of Hand", 8, 296, 753, 21, BitOR($GUI_SS_DEFAULT_INPUT,$ES_CENTER))
+$bExport = GUICtrlCreateButton("Export Hand", 772, 293, 73, 25)
 $groupDoraIndicators = GUICtrlCreateGroup("Dora Indicators", 8, 624, 849, 105)
 
 ; DORA DECLARATIONS ;
@@ -181,11 +180,13 @@ for $i = 1 to 13 Step 1
    $doraValue[$i] = "empty"
 Next
 
-; Index all tiles by a unique number
-; c <TileName> <Number>
-;Global Enum $cMAN1, $cMAN2, $cMAN3, $cMAN4, $cMAN5, $cMAN5r, $cMAN6, $cMAN7, $cMAN8, $cMAN9, $cSOU1, $cSOU2, $cSOU3, $cSOU4, $cSOU5, $cSOU5r, $cSOU6, $cSOU7, $cSOU8, $cSOU9, $cPIN1, $cPIN2, $cPIN3, $cPIN4, $cPIN5, $cPIN5r, $cPIN6, $cPIN7, $cPIN8, $cPIN9, $cTON, $cNAN, $cSHAA, $cPEI, $cCHUN, $cHAKU, $cHATSU
+Global $setsThatAreOpen[5]
+for $i = 1 to 4 Step 1
+   $setsThatAreOpen[$i] = 0
+Next
 
 Global $changeOrigin
+
 
 While 1
 	$nMsg = GUIGetMsg()
@@ -194,7 +195,47 @@ While 1
 	Switch $nMsg
 		Case $GUI_EVENT_CLOSE
 			Exit
-
+		 Case $bDone
+			if $hand[17] == "empty" AND $hand[18] == "empty" Then
+			   $SevenPairsEnabled = 1
+			   GUICtrlSetData($debug, "Done has been clicked, Seven Pairs detected and enabled!")
+			Else
+			   $SevenPairsEnabled = 0
+			   GUICtrlSetData($debug, "Done has been clicked")
+			EndIf
+			Checker()
+		 Case $bOpenSet1
+			if $setsThatAreOpen[1] == 0 Then
+			   $setsThatAreOpen[1] = 1
+			   GuiCtrlSetData($debug, "Set 1: Open")
+			Else
+			   $setsThatAreOpen[1] = 0
+			   GuiCtrlSetData($debug, "Set 1: Closed")
+			EndIf
+		 Case $bOpenSet2
+			if $setsThatAreOpen[2] == 0 Then
+			   $setsThatAreOpen[2] = 1
+			   GuiCtrlSetData($debug, "Set 2: Open")
+			Else
+			   $setsThatAreOpen[2] = 0
+			   GuiCtrlSetData($debug, "Set 2: Closed")
+			EndIf
+		 Case $bOpenSet3
+			if $setsThatAreOpen[3] == 0 Then
+			   $setsThatAreOpen[3] = 1
+			   GuiCtrlSetData($debug, "Set 3: Open")
+			Else
+			   $setsThatAreOpen[3] = 0
+			   GuiCtrlSetData($debug, "Set 3: Closed")
+			EndIf
+		 Case $bOpenSet4
+			if $setsThatAreOpen[4] == 0 Then
+			   $setsThatAreOpen[4] = 1
+			   GuiCtrlSetData($debug, "Set 4: Open")
+			Else
+			   $setsThatAreOpen[4] = 0
+			   GuiCtrlSetData($debug, "Set 4: Closed")
+			EndIf
 	EndSwitch
  WEnd
 
@@ -440,6 +481,11 @@ EndFunc
 
 ; Assigns numbers to the Hand & Dora arrays, makes it easy to keep track of what is in the hand and dora
 Func assigner($changeinto)
+
+   if $changeinto == "empty" Then
+	  return "empty"
+   EndIf
+
    if $changeinto == $man[1] Then
 	  return $cMAN1
    elseif $changeinto == $man[2] Then
@@ -525,6 +571,12 @@ EndFunc
 
 ; Func that actually sends back the string to change into
 Func ChangeInto($changeinto)
+
+   if $changeinto == "empty" Then
+	  GUICtrlSetData($debug, "Reverting to blank")
+	  return "Tiles\empty.bmp"
+   EndIf
+
    for $i = 1 to 9 Step 1
 	  if $changeinto == $man[$i] Then
 		 GUICtrlSetData($debug, "Changed into Man " & $i & "!")
@@ -581,20 +633,6 @@ Func ChangeInto($changeinto)
 
 	  EndIf
    return "Tiles\empty.bmp"
-EndFunc
-
-; HOTKEYS ;
-
-; Collects data on hand tiles & dora tiles, mainly a debug to see if everything is registered properly.
-Func status()
-   $string = ""
-   for $i = 1 To 18 Step 1
-	  $string &= "Hand Tile " & $i & ": " & TileTranslator($hand[$i]) & "   "
-   Next
-   for $i = 1 to 13 Step 1
-	  $string &= "Dora Tile " & $i & ": " & TileTranslator($doraValue[$i]) & "   "
-   Next
-   GUICtrlSetData($debug, $string)
 EndFunc
 
 ; Translates the numbers associated with the tiles
@@ -679,85 +717,3 @@ Func TileTranslator($number)
    EndIF
 EndFunc
 
-; Deselects with F1
-Func nullifyOriginChange()
-   $changeOrigin = null
-   GUICtrlSetData($debug, "Change tile disabled")
-EndFunc
-
-; Selects the next Tile for a quick change when pressing shift+D
-Func selectNext()
-
-if $changeOrigin == null Then
-   GUICtrlSetData($debug, "Click on a tile to change Tile 1 into.")
-   $changeOrigin = $piTile[1]
-   GUICtrlSetState($radioTile[1], $GUI_CHECKED)
-   return
-EndIf
-
-for $i = 1 to 18 Step 1
-   if $changeOrigin == $piTile[18] Then
-	  GUICtrlSetData($debug, "Click on a tile to change Dora 1 into.")
-	  $changeOrigin = $dora[1]
-	  return
-   elseif $changeOrigin == $piTile[$i] Then
-	  GUICtrlSetData($debug, "Click on a tile to change Tile " & $i+1 & " into.")
-	  $changeOrigin = $piTile[$i+1]
-	  GUICtrlSetState($radioTile[$i+1], $GUI_CHECKED)
-	  return
-   EndIf
-Next
-
-for $i = 1 to 13 Step 1
-   if $changeOrigin == $dora[13] Then
-	  GUICtrlSetData($debug, "Click on a tile to change Hand Tile 1 into.")
-	  $changeOrigin = $piTile[1]
-	  GUICtrlSetState($radioTile[1], $GUI_CHECKED)
-	  return
-   elseif $changeOrigin == $dora[$i] Then
-	  GUICtrlSetData($debug, "Click on a tile to change Dora " & $i+1 & " into.")
-	  $changeOrigin = $dora[$i+1]
-	  return
-   EndIf
-Next
-
-EndFunc
-
-; Selects the previous Tile for a quick change when pressing shift+A
-Func selectPrev()
-
-
-if $changeOrigin == null Then
-   GUICtrlSetData($debug, "Click on a tile to change Dora 13 into.")
-   $changeOrigin = $dora[13]
-   return
-EndIf
-
-for $i = 1 to 18 Step 1
-   if $changeOrigin == $piTile[1] Then
-	  GUICtrlSetData($debug, "Click on a tile to change Dora 13 into.")
-	  $changeOrigin = $dora[13]
-	  return
-   elseif $changeOrigin == $piTile[$i] Then
-	  GUICtrlSetData($debug, "Click on a tile to change Tile " & $i-1 & " into.")
-	  $changeOrigin = $piTile[$i-1]
-	  GUICtrlSetState($radioTile[$i-1], $GUI_CHECKED)
-	  return
-   EndIf
-Next
-
-for $i = 1 to 13 Step 1
-   if $changeOrigin == $dora[1] Then
-	  GUICtrlSetData($debug, "Click on a tile to change Hand Tile 18 into.")
-	  $changeOrigin = $piTile[18]
-	  GUICtrlSetState($radioTile[18], $GUI_CHECKED)
-	  return
-   elseif $changeOrigin == $dora[$i] Then
-	  GUICtrlSetData($debug, "Click on a tile to change Dora " & $i-1 & " into.")
-	  $changeOrigin = $dora[$i-1]
-	  return
-   EndIf
-Next
-
-
-EndFunc

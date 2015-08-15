@@ -89,28 +89,29 @@ EndIf
    return Pon($tile1,$tile2,$tile3,$tile4)
 EndFunc
 
-Func Checker()
-   CheckHand($hand[1],$hand[2],$hand[3],$hand[4])
-EndFunc
-
+; Checks for 3/4 tile sets
 Func CheckHand($c1,$c2,$c3,$c4)
    if $c1 == "empty" Then
 	  GUICtrlSetData($debug, "F5 pressed, but this hand doesn't have a tile")
 	  return
    EndIf
 
-   $set = Kan($c1, $c2, $c3, $c4)
-   if $set >= 80 Then
-	  GUICtrlSetData($debug, "Kan of " & TileTranslator($set-80))
-   elseif $set >= 40 and $set <= 76 Then
-	  GUICtrlSetData($debug, "Pon of " & TileTranslator($set-40))
-   elseif $set >= 10 and $set <= 37 Then
-	  GUICtrlSetData($debug, "Chi with value: " & ChiTranslator($set))
-   else
-	  GUICtrlSetData($debug, "F5 pressed, but I do not know what this set is. error value: " & $set)
+   return Kan($c1, $c2, $c3, $c4)
+EndFunc
+
+; Pairs are returned with 200 + their value, -1 if it's not a pair
+Func CheckPairs($p1,$p2)
+   if $p1 == "empty" Then
+	  return -1
+   EndIf
+   if $p1 == $p2 Then
+	  return 200+$p1
+   Else
+	  return -1
    EndIf
 EndFunc
 
+; Detects the suit out of the 3 inputed tiles
 Func SuitCheck($tile1,$tile2,$tile3)
 
    ; 0 to 9 are man tiles
@@ -140,6 +141,7 @@ Func SuitCheck($tile1,$tile2,$tile3)
    return 0
 EndFunc
 
+; Translates chi values
 Func ChiTranslator($chi)
    $string = ""
    if $chi <= 17 And $chi >= 10 Then
