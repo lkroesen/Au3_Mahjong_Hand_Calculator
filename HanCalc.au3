@@ -222,25 +222,40 @@ Func Honitsu()
 	  Return
    EndIf
 
-   $suit = ""
+   $suit = -1
    ; Find any suit tile
-   for $i=1 to 18 Step 1
+   for $i=1 to 17 Step 4
 	  If $hand[$i] >= 0 AND $hand[$i] <= 9 Then
-		 $suit = "man"
-		 ExitLoop
+		 if $suit == -1 OR $suit == 1 Then
+			; No man was found prior, or a man was found prior, everything is ok!
+			$suit = 1
+		 Else
+			; A tile other than man has been found as the $suit is no longer -1 or is equal to 1
+			 $bHonitsu = False
+			 return
+		 EndIf
 	  elseif $hand[$i] >= 10 AND $hand[$i] <= 19 Then
-		 $suit = "sou"
-		 ExitLoop
+		 if $suit == -1 OR $suit == 2 Then
+			; No man Sou found prior, or a Sou was found prior, everything is ok!
+			$suit = 2
+		 Else
+			; A tile other than Sou has been found as the $suit is no longer -1 or is equal to 2
+			 $bHonitsu = False
+			 return
+		 EndIf
 	  elseif $hand[$i] >= 20 AND $hand[$i] <= 29 Then
-		 $suit = "pin"
-		 ExitLoop
-	  elseif $i == 17 Then
-		 $bHonitsu = True
-		 return; Only honour tiles
+		 if $suit == -1 OR $suit == 3 Then
+			; No Pin found prior, or a Pin was found prior, everything is ok!
+			$suit = 3
+		 Else
+			; A tile other than Sou has been found as the $suit is no longer -1 or is equal to 3
+			 $bHonitsu = False
+			 return
+		 EndIf
 	  EndIf
    Next
-   msgbox(0, "Suit", $suit)
-   $bHonitsu = False
+   msgbox(0, "Honitsu Passes", $suit)
+   $bHonitsu = True
 EndFunc
 
 ; Shou Sangen / Little Three Dragons
