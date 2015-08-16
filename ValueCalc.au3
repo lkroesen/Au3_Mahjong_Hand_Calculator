@@ -74,6 +74,7 @@ Func Calculate()
    ToiToi()
    Sanankou()
    Sankantsu()
+   Sanshokudoukou()
    ; End yaku
 
    ; Check for Pinfu / No Point
@@ -167,9 +168,60 @@ Func Calculate()
 	  $nYaku+=1
    EndIf
 
+   ; Check for Sanshokudoukou
+   If $bSanshokudoukou == True Then
+	  $han+=2
+	  $FullHandName &= "Sanshoku Doukou "
+	  $nYaku+=1
+   EndIf
+
    $FullHandName &= " [Han: " & $han & " Fu: " & $fu & "]"
    $FullHandName &= "   Amount of Yaku: " & $nYaku
    GUICtrlSetData($fullNameOfHand, $FullHandName)
+EndFunc
+
+; Sanshoku doukou / Three colour triplets
+; Three triplets consisting of the same numbers in all three suits.
+Func Sanshokudoukou()
+   $bSanshokudoukou = False
+
+   For $i = 0 to 3 Step 1
+	  if $set[$i] >= 40 AND $set[$i] <= 49 Then ; Pon of Man
+		 For $f = 0 to 3 Step 1
+			if $set[$i]+10 == $set[$f] Then ; Found the Sou
+			   For $g = 0 to 3 Step 1
+				  if $set[$i]+20 == $set[$g] Then ; found the Pin
+					 $bSanshokudoukou = True
+					 return
+				  EndIf
+			   Next
+			EndIf
+		 Next
+	  EndIf
+   Next
+
+   $bSanshokudoukou = False
+
+EndFunc
+
+; Find the Chi,Pon or Kan that is Man, can only be 2 at max, if there's more it's not a Sanshokudoukou
+; if any set+20 is equal to 30 or higher it's not Man.
+; Chi man 1-2-3 = 11 + 20 = 31
+; Pon Man 1 = 40 + 0 = 40
+; Kan Man 1 = 80 + 0 = 80
+; If true, then there's 2 sets with a different suit, find the next in the next if
+; Only if Man is $set[0], so, find the Man set, there can be at max 2.
+Func ManSuit($inputSet, $loopcount)
+   If $inputSet >= 11 AND $inputSet <= 17 Then
+	  return true; Find out if $inputSet is a Man Chi , If not return false
+   elseif $inputSet >= 40 AND $inputSet <= 49 Then
+	  return true; Find out if $inputset is a Man Pon , If not return false
+   elseif $inputSet >= 80 AND $inputSet <= 89 Then
+	  return true; Find out if $inputSet is a Man Kan , If not return false
+   Else
+	  msgBox(0, "InputSet", "Nope at " & $loopcount)
+	  return false
+   EndIf
 EndFunc
 
 ; Sankantsu 3x pon/kan

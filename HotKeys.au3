@@ -46,7 +46,7 @@ Func status()
 	  $string &= "Hand Tile " & $i & ": " & TileTranslator($hand[$i]) & "   "
    Next
    for $i = 1 to 13 Step 1
-	  $string &= "Dora Tile " & $i & ": " & TileTranslator($doraValue[$i]) & "   "
+	  $string &= "Dora Tile " & $i & ": " & $doraValue[$i] & "   "
    Next
    GUICtrlSetData($debug, $string)
 EndFunc
