@@ -1,10 +1,10 @@
-; In this .au3 we'll actually perform hand calculations
+; In this .au3 we'll perform han calculations
 
 ; When pressing "Done" or F5 this part of the program will calculate the hand name & the points associated
 ; Thanks to "Checker" in HotKeys.au3 all Set arrays will have a unique value for all sets/pairs
 ; using these unique numbers we can check for requirements and calculate the value.
 
-; "Main" of ValueCalc, this method gets called to initiate the calculation.
+; "Main" of HanCalc, this method gets called to initiate the calculation.
 Global $han
 Global $fu
 Global $rWind
@@ -31,6 +31,9 @@ Global $bJunchan = False
 Global $bRyanpeikou = False
 Global $bChinitsu = False
 
+; Classifications
+Global $boolYakuman = False
+
 Func Calculate()
    ; Get wind directions off of GUI
    If getWinds() == false Then
@@ -44,13 +47,22 @@ Func Calculate()
    $nYaku = 0
 
    ; Seven Pairs Exception
-   ; Honroutou possible (if it is then it's called: Honroochiitoi) TODO ADD DETECT
-   ; Tsuu iisou possible (Yakuman)
+   ; Honroutou possible (if it is then it's called: Honroochiitoi)
+   ; Tsuu iisou possible (Yakuman) TODO ADD DETECT
    If $SevenPairsEnabled == 1 Then
 	  $han += 2
 	  $nYaku += 1
+	  Honroutou()
+
+	  if $HonroutouTrue == 1 Then
+		 $FullHandName &= "Honroutou "
+		 $han += 2
+		 $nYaku += 1
+	  EndIf
+
+
 	  ; TODO additional calculations
-	  $FullHandName &= " Chiitoitsu "
+	  $FullHandName &= "Chiitoitsu "
 	  $FullHandName &= " [Han: " & $han & " Fu: " & $fu & "]"
 	  $FullHandName &= "   Amount of Yaku: " & $nYaku
 	  GUICtrlSetData($fullNameOfHand, $FullHandName)
@@ -75,6 +87,8 @@ Func Calculate()
    Sanankou()
    Sankantsu()
    Sanshokudoukou()
+   Shou_Sangen()
+   Honitsu()
    ; End yaku
 
    ; Check for Pinfu / No Point
@@ -175,9 +189,87 @@ Func Calculate()
 	  $nYaku+=1
    EndIf
 
+   ; Check for Shou Sangen
+   If $bShouSangen == True Then
+	  $han+=2
+	  $FullHandName &= "Shou Sangen "
+	  $nYaku+=1
+   EndIf
+
+   ; Check for Honitsu
+   If $bHonitsu = True Then
+	  if Concealed() == -1 Then
+		 $han+=2
+	  Else
+		 $han+=3
+	  EndIf
+	  $FullHandName &= "Honitsu "
+	  $nYaku+=1
+   EndIf
+
+
    $FullHandName &= " [Han: " & $han & " Fu: " & $fu & "]"
    $FullHandName &= "   Amount of Yaku: " & $nYaku
    GUICtrlSetData($fullNameOfHand, $FullHandName)
+EndFunc
+
+; Honitsu / Dirty Flush
+; The hand contains tiles from a single suit plus honours (Hence dirty)
+Func Honitsu()
+   $bHonitsu = False
+
+   If AFilledHand() == -1 Then
+	  Return
+   EndIf
+
+   $suit = ""
+   ; Find any suit tile
+   for $i=1 to 18 Step 1
+	  If $hand[$i] >= 0 AND $hand[$i] <= 9 Then
+		 $suit = "man"
+		 ExitLoop
+	  elseif $hand[$i] >= 10 AND $hand[$i] <= 19 Then
+		 $suit = "sou"
+		 ExitLoop
+	  elseif $hand[$i] >= 20 AND $hand[$i] <= 29 Then
+		 $suit = "pin"
+		 ExitLoop
+	  elseif $i == 17 Then
+		 $bHonitsu = True
+		 return; Only honour tiles
+	  EndIf
+   Next
+   msgbox(0, "Suit", $suit)
+   $bHonitsu = False
+EndFunc
+
+; Shou Sangen / Little Three Dragons
+; Requirement: Any 2 pon of dragon tiles any pair of dragon tiles
+Func Shou_Sangen()
+   $bShouSangen = False
+
+   if PonOf($cCHUN) == 1 OR KanOf($cCHUN) == 1 Then
+	  ;msgbox(0, "chun", "chun passed")
+	  if PonOf($cHAKU) == 1 or PonOf($cHATSU) == 1 or KanOf($cHAKU) == 1 or KanOf($cHATSU) == 1 Then
+		 ;msgbox(0, "haku/hatsu", "haku/hatsu passed")
+		 if PairOf($cHAKU) == 1 or PairOf($cHATSU) == 1 Then
+			;msgbox(0, "pair", "pair passed")
+			$bShouSangen = true
+		 EndIf
+	  EndIf
+   elseif PonOf($cHAKU) == 1 OR KanOf($cHAKU) == 1 Then
+	  if PonOf($cCHUN) == 1 or PonOf($cHATSU) == 1 OR KanOf($cCHUN) == 1 or KanOf($cHATSU) == 1 Then
+		 if PairOf($cCHUN) == 1 or PairOf($cHATSU) == 1 Then
+			$bShouSangen = true
+		 EndIf
+	  EndIf
+   elseif PonOf($cHATSU) == 1 OR KanOf($cHATSU) == 1 Then
+	  if PonOf($cHAKU) == 1 or PonOf($cCHUN) == 1 OR KanOf($cHAKU) == 1 or KanOf($cCHUN) == 1 Then
+		 if PairOf($cHAKU) == 1 or PairOf($cCHUN) == 1 Then
+			$bShouSangen = true
+		 EndIf
+	  EndIf
+   EndIf
 EndFunc
 
 ; Sanshoku doukou / Three colour triplets
@@ -293,6 +385,10 @@ EndFunc
 ; Honroutou / All terminals and/or honours
 Func Honroutou()
    $HonroutouTrue = 0
+
+   if AFilledHand() == -1 Then
+	  return
+   EndIf
 
    ; Search through hand for non-terminals and honours
    for $i = 1 to 18 Step 1
@@ -629,6 +725,19 @@ Func PonOf($cT)
    $ponID = 40 + $cT
 
    for $i = 0 to 3 Step 1
+	  If $set[$i] == $ponID Then
+		 return 1
+	  EndIf
+   Next
+   return -1
+EndFunc
+
+; Check for Pair of <TileNum> returns1 if found
+Func PairOf($cT)
+   ; Pair value is 200 + TileNum
+   $ponID = 200 + $cT
+
+   for $i = 0 to 6 Step 1
 	  If $set[$i] == $ponID Then
 		 return 1
 	  EndIf

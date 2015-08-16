@@ -6,7 +6,7 @@
 #include <WindowsConstants.au3>
 #include <HandChecker.au3>
 #include <HotKeys.au3>
-#include <ValueCalc.au3>
+#include <HanCalc.au3>
 
 ; Use arrays for GUI elements might be useful later on.
 Global $piTile[19] ; 0 unused
