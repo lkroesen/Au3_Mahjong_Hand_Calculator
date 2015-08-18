@@ -44,6 +44,8 @@ $miEdge 		=	GUICtrlCreateMenuItem("Edge ( 1-2 <- w1 or 8-9 <- w7 )", $menuItemWa
 $miClosed 		=	GUICtrlCreateMenuItem("Closed ( 2-4 <- w3 )", $menuItemWait)
 $miSingle 		=	GUICtrlCreateMenuItem("Single ( 5-5 <- w5 )", $menuItemWait)
 $miOpen 		=	GUICtrlCreateMenuItem("Open ( 2-3 <- w1 or w4 )", $menuItemWait)
+$mi9 			=	GUICtrlCreateMenuItem("Nine (Nine Gates Yakuman)", $menuItemWait)
+$mi13			=	GUICtrlCreateMenuItem("13 (Kokushi Musou Yakuman)", $menuItemWait)
 
 $menuDealer 	= 	GUICtrlCreateMenu("Dealer")
 $miDealer		=	GUICtrlCreateMenuItem("Dealer", $menuDealer)

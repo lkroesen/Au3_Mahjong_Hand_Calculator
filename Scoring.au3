@@ -64,10 +64,21 @@ Func NormalScoring()
    EndIf
 EndFunc
 
+; 2x Yakuman
+Func DoubleYakumanScr()
+   if $scrDealer == true Then
+	  $handworth = "Dealer Double Yakuman"
+	  GUICtrlSetData($inputPoints, "32,000 ALL")
+   Else
+	  $handworth = "Double Yakuman"
+	  GUICtrlSetData($inputPoints, "16,000/32,000")
+   EndIf
+EndFunc
+
 ; Han 13+
 Func YakumanScr()
    if $scrDealer == true Then
-	  $handworth = "Dealer Yakuman"
+	  $handworth = "Dealer Yakuman)"
 	  GUICtrlSetData($inputPoints, "16,000 ALL")
    Else
 	  $handworth = "Yakuman"

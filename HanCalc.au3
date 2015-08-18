@@ -31,6 +31,16 @@ Global $bRyanpeikou = False
 Global $bChinitsu = False
 
 ; Yakuman Declarations
+Global $bKokushi = False
+Global $bDaisangen = False
+Global $bShousuushii = False
+Global $bDaiSuushii = False
+Global $bChuurenPoutou = False
+Global $bSuuAnkou = False
+Global $bRyuuiisou = False
+Global $bSuuKantsu = False
+Global $bTsuuIisou = False
+Global $bChinroutou = False
 
 ; Classifications
 Global $boolYakuman = False
@@ -62,7 +72,7 @@ Func Calculate()
    If $YakuSitHan == "mangan" Then
 	  ; No Calculations, the hand is a mangan.
 	  $han = "Mangan"
-	  $fu = "Irrelevant"
+	  FuMain()
 	  $FullHandName &= " [Han: " & $han & " Fu: " & $fu & "]"
 	  $FullHandName &= "   Amount of Yaku: " & $nYaku
 	  GUICtrlSetData($fullNameOfHand, $FullHandName)
@@ -73,6 +83,9 @@ Func Calculate()
    If $YakuSitHan == "yakuman" Then
 	  $boolYakuman = True
    EndIf
+   Daisangen()
+   Shousuushii()
+   DaiSuushii()
    #EndRegion
 
    #Region Kokushi Musou / 13 orphans
@@ -80,8 +93,27 @@ Func Calculate()
    #EndRegion
 
    if $boolYakuman == True Then
+	  If $bDaisangen == True Then
+		$FullHandName &= "Daisangen / Big Three Dragons "
+	  EndIf
 
+	  If $bShousuushii == True Then
+		 $FullHandName &= "Shousuushii / Little Four Winds "
+	  EndIf
 
+	  If $bDaiSuushii == True Then
+		 $FullHandName &= "Dai Suushii / Big Four Winds "
+	  EndIf
+
+	  FuMain()
+	  if $boolDoubleYakuman == True Then
+		 DoubleYakumanScr()
+	  Else
+		 YakumanScr()
+	  EndIf
+	  $FullHandName &= "(" & $handworth & ")"
+	  GUICtrlSetData($fullNameOfHand, $FullHandName)
+	  Return
    Else
    $han += $YakuSitHan
    #Region Normal Yaku
@@ -109,7 +141,7 @@ Func Calculate()
 
 		 ; Check for Honroutou
 		 if $HonroutouTrue == 1 Then
-			$FullHandName &= "Honroutou "
+			$FullHandName &= "Honroochiitoi "
 			$han += 2
 			$nYaku += 1
 		 EndIf
@@ -335,6 +367,81 @@ Func Calculate()
 EndIf
 EndFunc
 
+#Region Yakuman Func
+; Big Four Winds / Dai Suushii
+Func DaiSuushii()
+   $bDaiSuushii = False
+
+   if AmountOfWindKtsu() == 4 Then
+	  $bDaiSuushii = True
+	  YakumanTrue()
+	  YakumanTrue()
+   EndIf
+
+EndFunc
+
+; Little Four Winds / Shousuushii
+Func Shousuushii()
+   $bShousuushii = False
+
+   ; check for the pair needed, then when AmountOfWindKtsu is 3, Yakuman.
+   if PairOf($cTON) == 1 OR PairOf($cNAN) == 1 OR PairOf($cSHAA) == 1 OR PairOf($cPEI) == 1 Then
+	  if AmountOfWindKtsu() == 3 Then
+		 $bShousuushii = true
+		 YakumanTrue()
+	  EndIf
+   EndIf
+EndFunc
+
+; Return the amount of Pon/Kan of winds found
+Func AmountOfWindKtsu()
+   $nWinds = 0
+
+   if PonOf($cTON) == 1 or KanOf($cTON) == 1 Then
+	  $nWinds += 1
+   EndIf
+
+   If PonOf($cNAN) == 1 or KanOf($cNAN) == 1 Then
+	  $nWinds += 1
+   EndIf
+
+   If PonOf($cSHAA) == 1 or KanOf($cSHAA) == 1 Then
+	  $nWinds += 1
+   EndIf
+
+   If PonOf($cPEI) == 1 or KanOf($cPEI) == 1 Then
+	  $nWinds += 1
+   EndIf
+
+   return $nWinds
+
+EndFunc
+
+; Big Three Dragons, hand has Pon or Kan of all Dragons
+Func Daisangen()
+   $bDaisangen = False
+
+   if PonOf($cCHUN) == 1 OR KanOf($cCHUN) == 1 Then
+	  if PonOf($cHAKU) == 1 or KanOf($cHAKU) == 1 Then
+		 if PonOf($cHATSU) == 1 or KanOf($cHATSU) == 1 Then
+			$bDaisangen = true
+			YakumanTrue()
+			Return
+		 EndIf
+	  EndIf
+   EndIf
+EndFunc
+
+Func YakumanTrue()
+   if $boolYakuman == True Then
+	  $boolDoubleYakuman = True
+   Else
+	  $boolYakuman = True
+   EndIf
+EndFunc
+#EndRegion Yakuman Func
+
+#Region Normal Yaku Func
 ; Honitsu/Chinitsu for 7 Pairs
 Func Itsu()
    $bHonitsu = False
@@ -935,6 +1042,8 @@ Func Pinfu()
 
    $pinfuTrue = 1
 EndFunc
+
+#EndRegion Normal Yaku Func
 
 ; Check if hand is conealed, 1 if concealed, -1 if Opened
 Func Concealed()
