@@ -7,17 +7,48 @@
 #include <HandChecker.au3>
 #include <HotKeys.au3>
 #include <HanCalc.au3>
+#include <FuCalc.au3>
+#include <YakuSituations.au3>
+#include <DoraHandler.au3>
+#include <Scoring.au3>
 
 ; Use arrays for GUI elements might be useful later on.
 Global $piTile[19] ; 0 unused
 Global $radioTile[19] ; 0 unused
+Global $radioDora[14]
 Global $man[10] ; 0 is RED DORA
 Global $sou[10] ; 0 is RED DORA
 Global $pin[10] ; 0 is RED DORA
 Global $dora[14] ; 0 unused
+Global $HotKeySubMenu[8]
 
 #Region ### START Koda GUI section ### Form=\MAIN FORM BACKUP.kxf
-$Form1 = GUICreate("Mahjong Hand Calculator", 867, 762, 456, 111)
+$Form1_1 = GUICreate("Mahjong Hand Calculator", 864, 806, 456, 111)
+
+$miHotkeys = GUICtrlCreateMenu("HotKeys")
+$HotKeySubMenu[0] = GUICtrlCreateMenuItem("[F1] Go back to Hand 1 Tile", $miHotkeys)
+$HotKeySubMenu[1] = GUICtrlCreateMenuItem("[F4] Enable Open Wait", $miHotkeys)
+$HotKeySubMenu[2] = GUICtrlCreateMenuItem("[F5] Run Calculator", $miHotkeys)
+$HotKeySubMenu[3] = GUICtrlCreateMenuItem("[F7] Enable Seven Pairs / Kokushi Mushou", $miHotkeys)
+$HotKeySubMenu[4] = GUICtrlCreateMenuItem("[F9] Debug Status", $miHotkeys)
+$HotKeySubMenu[5] = GUICtrlCreateMenuItem("[DEL] Delete Selected Tile from Hand", $miHotkeys)
+$HotKeySubMenu[6] = GUICtrlCreateMenuItem("[->] Go to next Hand Tile", $miHotkeys)
+$HotKeySubMenu[7] = GUICtrlCreateMenuItem("[<-] Go to prev Hand Tile", $miHotkeys)
+
+$menuItemHandOptions = GUICtrlCreateMenu("Hand Options")
+$miRonWin = GUICtrlCreateMenuItem("Won by Ron", $menuItemHandOptions)
+$miTsumoWin = GUICtrlCreateMenuItem("Won by Tsumo", $menuItemHandOptions)
+
+$menuItemWait 	= 	GUICtrlCreateMenu("Wait")
+$miEdge 		=	GUICtrlCreateMenuItem("Edge ( 1-2 <- w1 or 8-9 <- w7 )", $menuItemWait)
+$miClosed 		=	GUICtrlCreateMenuItem("Closed ( 2-4 <- w3 )", $menuItemWait)
+$miSingle 		=	GUICtrlCreateMenuItem("Single ( 5-5 <- w5 )", $menuItemWait)
+$miOpen 		=	GUICtrlCreateMenuItem("Open ( 2-3 <- w1 or w4 )", $menuItemWait)
+
+$menuDealer 	= 	GUICtrlCreateMenu("Dealer")
+$miDealer		=	GUICtrlCreateMenuItem("Dealer", $menuDealer)
+$miNonDealer	=	GUICtrlCreateMenuItem("Non-Dealer", $menuDealer)
+
 $groupHand = GUICtrlCreateGroup("Hand", 8, 0, 849, 281)
 
 ; HAND TILES ;
@@ -145,7 +176,7 @@ $bOpenSet4 = GUICtrlCreateButton("13-16 Open", 480, 240, 65, 25)
 
 $fullNameOfHand = GUICtrlCreateInput("Full name of Hand", 8, 296, 753, 21, BitOR($GUI_SS_DEFAULT_INPUT,$ES_CENTER))
 $bExport = GUICtrlCreateButton("Export Hand", 772, 293, 73, 25)
-$groupDoraIndicators = GUICtrlCreateGroup("Dora Indicators", 8, 624, 849, 105)
+$groupDoraIndicators = GUICtrlCreateGroup("Dora Indicators", 8, 624, 849, 129)
 
 ; DORA DECLARATIONS ;
 $dora[1] = GUICtrlCreatePic("Tiles\empty.bmp", 24, 648, 49, 73)
@@ -162,8 +193,24 @@ $dora[11] = GUICtrlCreatePic("Tiles\empty.bmp", 664, 648, 49, 73)
 $dora[12] = GUICtrlCreatePic("Tiles\empty.bmp", 728, 648, 49, 73)
 $dora[13] = GUICtrlCreatePic("Tiles\empty.bmp", 792, 648, 49, 73)
 
+; DORA RADIO DECLARATIONS ;
+$radioDora[1] = GUICtrlCreateRadio("Dora 1", 24, 728, 57, 17)
+$radioDora[2] = GUICtrlCreateRadio("Dora 2", 84, 728, 57, 17)
+$radioDora[3] = GUICtrlCreateRadio("Dora 3", 150, 728, 57, 17)
+$radioDora[4] = GUICtrlCreateRadio("Dora 4", 214, 728, 57, 17)
+$radioDora[5] = GUICtrlCreateRadio("Dora 5", 278, 728, 57, 17)
+$radioDora[6] = GUICtrlCreateRadio("Dora 6", 342, 728, 57, 17)
+$radioDora[7] = GUICtrlCreateRadio("Dora 7", 408, 728, 57, 17)
+$radioDora[8] = GUICtrlCreateRadio("Dora 8", 470, 728, 57, 17)
+$radioDora[9] = GUICtrlCreateRadio("Dora 9", 534, 728, 57, 17)
+$radioDora[10] = GUICtrlCreateRadio("Dora 10", 596, 728, 57, 17)
+$radioDora[11] = GUICtrlCreateRadio("Dora 11", 662, 728, 57, 17)
+$radioDora[12] = GUICtrlCreateRadio("Dora 12", 724, 728, 57, 17)
+$radioDora[13] = GUICtrlCreateRadio("Dora 13", 788, 728, 65, 17)
+
+
 ; DEBUG ;
-$debug = GUICtrlCreateInput("Clarification messages right here!", 8, 736, 849, 21)
+$debug = GUICtrlCreateInput("Clarification messages right here!", 8, 760, 849, 21)
 
 ; END OF GUI ;
 GUISetState(@SW_SHOW)
@@ -187,6 +234,8 @@ Next
 
 Global $changeOrigin
 
+; Force Auto select upon launch
+CheckChangeAbleImage($piTile[1])
 
 While 1
 	$nMsg = GUIGetMsg()
@@ -236,6 +285,58 @@ While 1
 			   $setsThatAreOpen[4] = 0
 			   GuiCtrlSetData($debug, "Set 4: Closed")
 			EndIf
+		 Case $miEdge
+			$waitType = 1
+			$OpenWaitEnabled = 0
+			GUICtrlSetData($debug, "Edge Wait, waiting on a tile that completes a chi of 2-3 or 8-9, 1 or 7")
+		 Case $miClosed
+			$waitType = 2
+			$OpenWaitEnabled = 0
+			GUICtrlSetData($debug, "Closed Wait, waiting on a a tile that is between 2 tiles, ex: waiting on 4 when you have tiles 3 and 5")
+		 Case $miSingle
+			$waitType = 3
+			$OpenWaitEnabled = 0
+			GUICtrlSetData($debug, "Single Wait, waiting on one tile")
+		 Case $miOpen
+			$waitType = 4
+			$OpenWaitEnabled = 1
+			GUICtrlSetData($debug, "Open Wait, waiting on more than 1 tile to win")
+		 Case $miRonWin
+			$WinOnRon = True
+			GUICtrlSetData($debug, "Won on a discard of another player")
+		 Case $miTsumoWin
+			$WinOnRon = False
+			GUICtrlSetData($debug, "Won by drawing the winning tile yourself")
+		 Case $checkboxTsumo
+			GUICtrlSetData($debug, "Concealed hand, draws winning tile from the wall to complete it")
+		 Case $checkboxRiichi
+			GUICtrlSetData($debug, "You should know what this means...")
+		 Case $checkboxDoubleRiichi
+			GUICtrlSetData($debug, "Riichi declared on first discard")
+		 Case $checkboxIppatsu
+			GUICtrlSetData($debug, "One-shot, On first go-around, after riichi you get the right tile, without any pon, chi or kan calls")
+		 Case $checkboxHaiteiRaoyue
+			GUICtrlSetData($debug, "Win on last tile draw (Tsumo on last tile)")
+		 Case $checkboxHouteiRaoyui
+			GUICtrlSetData($debug, "Win on last tile discard (Ron on last tile)")
+		 Case $checkboxRinshan
+			GUICtrlSetData($debug, "Declare a Kan -> Win by tile drawn from deadwall")
+		 Case $checkboxChankan
+			GUICtrlSetData($debug, "Robbing a Kan/Quad, If a player adds to a Pon on the table, you can steal the tile that would be used for the Kan")
+		 Case $checkboxNagashiMangan
+			GUICtrlSetData($debug, "Only terminals and honours in discard pile, hand doesn't have to be in Tenpai, Value: Mangan")
+		 Case $checkboxTenhou
+			GUICtrlSetData($debug, "Blessing of Heaven, the 14 tiles that the dealer draws is a composed hand, Value: Yakuman")
+		 Case $checkboxChiihou
+			GUICtrlSetData($debug, "Blessing of Earth, The first draw makes a completed hand, Value: Yakuman")
+		 Case $checkboxRenhou
+			GUICtrlSetData($debug, "Blessing of Man, win on first discard, if a concealed Kan is declared doesn't count, Value: Yakuman")
+		 Case 	$miDealer
+			$scrDealer = true
+			GUICtrlSetData($debug, "Dealer, your hands are worth 1.5x more and you pay 2x more")
+		 Case	$miNonDealer
+			$scrDealer = false
+			GUICtrlSetData($debug, "Non-Dealer, you pay 1x and get 1x")
 	EndSwitch
  WEnd
 

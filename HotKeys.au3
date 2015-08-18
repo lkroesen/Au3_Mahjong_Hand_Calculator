@@ -1,27 +1,30 @@
 HotKeySet("{F1}", "nullifyOriginChange")
-HotKeySet("+d", "selectNext")
-HotKeySet("+a", "selectPrev")
+HotKeySet("{RIGHT}", "selectNext")
+HotKeySet("{LEFT}", "selectPrev")
 HotKeySet("{F9}", "status")
 HotKeySet("{F5}", "Checker")
 HotKeySet("{F7}", "SevenPairs")
 HotKeySet("{DEL}","Deleter")
 HotKeySet("{F4}", "OpenWaitEnabled")
+HotKeySet("{F2}", "FuMain")
+HotKeySet("{F3}", "RoundUp")
 
 ; HOTKEYS ;
 ; 7 due to 7 pairs.
 Global $set[7]
 Global $SevenPairsEnabled = 0
 Global $OpenWaitEnabled = 0
+Global $Kokushi = false
 
-; Enabler or Disabled of Seven Pairs
+; Enabler or Disabler of Seven Pairs (This also works for Kokushi Mushou)
 Func SevenPairs()
 
    if $SevenPairsEnabled == 0 Then
 	  $SevenPairsEnabled = 1
-	  GUICtrlSetData($debug, "Enabled Seven Pairs: " & $SevenPairsEnabled)
+	  GUICtrlSetData($debug, "Enabled Seven Pairs / Kokushi Mushou: " & $SevenPairsEnabled)
    Else
 	  $SevenPairsEnabled = 0
-	  GUICtrlSetData($debug, "Disabled Seven Pairs: " & $SevenPairsEnabled)
+	  GUICtrlSetData($debug, "Disabled Seven Pairs / Kokushi Mushou: " & $SevenPairsEnabled)
    EndIf
 
 EndFunc
@@ -122,6 +125,7 @@ if $changeOrigin == null Then
    GUICtrlSetData($debug, "Click on a tile to change Tile 1 into.")
    $changeOrigin = $piTile[1]
    GUICtrlSetState($radioTile[1], $GUI_CHECKED)
+   GUICtrlSetState($radioDora[13], $GUI_UNCHECKED)
    return
 EndIf
 
@@ -129,6 +133,8 @@ for $i = 1 to 18 Step 1
    if $changeOrigin == $piTile[18] Then
 	  GUICtrlSetData($debug, "Click on a tile to change Dora 1 into.")
 	  $changeOrigin = $dora[1]
+	  GUICtrlSetState($radioDora[1], $GUI_CHECKED)
+	  GUICtrlSetState($radioTile[18], $GUI_UNCHECKED)
 	  return
    elseif $changeOrigin == $piTile[$i] Then
 	  GUICtrlSetData($debug, "Click on a tile to change Tile " & $i+1 & " into.")
@@ -143,10 +149,12 @@ for $i = 1 to 13 Step 1
 	  GUICtrlSetData($debug, "Click on a tile to change Hand Tile 1 into.")
 	  $changeOrigin = $piTile[1]
 	  GUICtrlSetState($radioTile[1], $GUI_CHECKED)
+	  GUICtrlSetState($radioDora[13], $GUI_UNCHECKED)
 	  return
    elseif $changeOrigin == $dora[$i] Then
 	  GUICtrlSetData($debug, "Click on a tile to change Dora " & $i+1 & " into.")
 	  $changeOrigin = $dora[$i+1]
+	  GUICtrlSetState($radioDora[$i+1], $GUI_CHECKED)
 	  return
    EndIf
 Next
@@ -160,6 +168,8 @@ Func selectPrev()
 if $changeOrigin == null Then
    GUICtrlSetData($debug, "Click on a tile to change Dora 13 into.")
    $changeOrigin = $dora[13]
+   GUICtrlSetState($radioTile[1], $GUI_UNCHECKED)
+   GUICtrlSetState($radioDora[13], $GUI_CHECKED)
    return
 EndIf
 
@@ -167,6 +177,8 @@ for $i = 1 to 18 Step 1
    if $changeOrigin == $piTile[1] Then
 	  GUICtrlSetData($debug, "Click on a tile to change Dora 13 into.")
 	  $changeOrigin = $dora[13]
+	  GUICtrlSetState($radioTile[1], $GUI_UNCHECKED)
+	  GUICtrlSetState($radioDora[13], $GUI_CHECKED)
 	  return
    elseif $changeOrigin == $piTile[$i] Then
 	  GUICtrlSetData($debug, "Click on a tile to change Tile " & $i-1 & " into.")
@@ -181,10 +193,12 @@ for $i = 1 to 13 Step 1
 	  GUICtrlSetData($debug, "Click on a tile to change Hand Tile 18 into.")
 	  $changeOrigin = $piTile[18]
 	  GUICtrlSetState($radioTile[18], $GUI_CHECKED)
+	  GUICtrlSetState($radioDora[1], $GUI_UNCHECKED)
 	  return
    elseif $changeOrigin == $dora[$i] Then
 	  GUICtrlSetData($debug, "Click on a tile to change Dora " & $i-1 & " into.")
 	  $changeOrigin = $dora[$i-1]
+	  GUICtrlSetState($radioDora[$i-1], $GUI_CHECKED)
 	  return
    EndIf
 Next

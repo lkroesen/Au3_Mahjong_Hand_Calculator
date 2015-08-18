@@ -6,7 +6,6 @@
 
 ; "Main" of HanCalc, this method gets called to initiate the calculation.
 Global $han
-Global $fu
 Global $rWind
 Global $sWind
 Global $FullHandName = ""
@@ -33,8 +32,10 @@ Global $bChinitsu = False
 
 ; Classifications
 Global $boolYakuman = False
+Global $boolDoubleYakuman = False
 
 Func Calculate()
+   YakuSitMain()
    ; Get wind directions off of GUI
    If getWinds() == false Then
 	  GUICtrlSetData($debug, "Calculation aborted due to Winds not initialized")
@@ -42,175 +43,393 @@ Func Calculate()
    EndIf
 
    $FullHandName = ""
+   $FullHandName &= $YakuSitName
    $han = 0
    $fu = 0
    $nYaku = 0
 
-   ; Seven Pairs Exception
-   ; Honroutou possible (if it is then it's called: Honroochiitoi)
-   ; Tsuu iisou possible (Yakuman) TODO ADD DETECT
-   If $SevenPairsEnabled == 1 Then
-	  $han += 2
-	  $nYaku += 1
-	  Honroutou()
+   $boolYakuman = False
+   $boolDoubleYakuman = False
 
-	  if $HonroutouTrue == 1 Then
-		 $FullHandName &= "Honroutou "
-		 $han += 2
-		 $nYaku += 1
-	  EndIf
+   DoraMain()
+   $han += $doraHan
+   $nYaku += $nYakuSit
 
-
-	  ; TODO additional calculations
-	  $FullHandName &= "Chiitoitsu "
+   If $YakuSitHan == "mangan" Then
+	  ; No Calculations, the hand is a mangan.
+	  $han = "Mangan"
+	  $fu = "Irrelevant"
 	  $FullHandName &= " [Han: " & $han & " Fu: " & $fu & "]"
 	  $FullHandName &= "   Amount of Yaku: " & $nYaku
 	  GUICtrlSetData($fullNameOfHand, $FullHandName)
+	  Return
+   EndIf
+
+   #Region Yakuman Detections
+   If $YakuSitHan == "yakuman" Then
+	  $boolYakuman = True
+   EndIf
+   #EndRegion
+
+   #Region Kokushi Musou / 13 orphans
+
+   #EndRegion
+
+   if $boolYakuman == True Then
+
+
+   Else
+   $han += $YakuSitHan
+   #Region Normal Yaku
+	  #Region Seven Pairs
+	  ; Honroutou possible (if it is then it's called: Honroochiitoi)
+	  ; Tsuu iisou possible (Yakuman) TODO ADD DETECT
+	  ; Allowed Situations:
+	  ; Houtei's also allowed
+	  ; Riichi & Double Riichi
+	  ; Ippatsu (one-shot)
+	  ; Tsumo
+	  If $SevenPairsEnabled == 1 Then
+		 $han += 2
+		 $nYaku += 1
+
+		 Honroutou()
+		 Itsu()
+
+		 ; Check for Kuitan / All Simples
+		 If NoTerminals() == 1 AND NoHonours() == 1 Then
+			$FullHandName &= "Kuitan "
+			$han += 1
+			$nYaku += 1
+		 EndIf
+
+		 ; Check for Honroutou
+		 if $HonroutouTrue == 1 Then
+			$FullHandName &= "Honroutou "
+			$han += 2
+			$nYaku += 1
+		 EndIf
+
+		 ; Check for Honitsu
+		 If $bHonitsu = True Then
+			if Concealed() == -1 Then
+			   $han+=2
+			Else
+			   $han+=3
+			EndIf
+
+			if $bChinitsu == True Then
+			   ; do nuffin
+			Else
+			   $FullHandName &= "Honitsu "
+			   $nYaku+=1
+			EndIf
+		 EndIf
+
+		 ;  Check for Chinitsu
+		 if $bChinitsu == True Then
+			$FullHandName &= "Chinitsu "
+			$han += 3
+			$nYaku+=1
+		 EndIf
+
+		 $FullHandName &= "Chiitoitsu "
+		 $FullHandName &= " [Han: " & $han & " Fu: " & $fu & "]"
+		 $FullHandName &= "   Amount of Yaku: " & $nYaku
+		 GUICtrlSetData($fullNameOfHand, $FullHandName)
+		 return
+	  EndIf
+	  #EndRegion Seven Pairs
+
+	  ; 13 Orphans Exception
+
+	  ; Check if atleast Tiles 1,2,3 5,6,7 9,10,11 13,14,15 & 17,18 are not empty.
+	  NotFilledMin()
+
+	  #Region Yaku
+	  Pinfu()
+	  Tanyao()
+	  Iipeikou()
+	  Yakuhai()
+	  Sanshoku_Doujin()
+	  Ikkitsuukan()
+	  Chantaiyao()
+	  Honroutou()
+	  ToiToi()
+	  Sanankou()
+	  Sankantsu()
+	  Sanshokudoukou()
+	  Shou_Sangen()
+	  Honitsu()
+	  Junchan()
+	  Ryanpeikou()
+	  Chinitsu()
+	  #EndRegion Yaku
+
+	  #Region Yaku-Ifs
+	  ; Check for Pinfu / No Point
+	  If $pinfuTrue == 1 Then
+		 $FullHandName &= "Pinfu "
+		 $han += 1
+		 $nYaku += 1
+	  EndIf
+	  ; Check for Tanyao / All Simples
+	  If $tanyaoTrue == 1 Then
+		 ; Check if it's a Tanyao (Closed Hand Tanyao) or a Kuitan (Open Hand Tanyao)
+		 if Concealed() == -1 Then
+			$FullHandName &= "Kuitan "
+		 Else
+			$FullHandName &= "Tanyao "
+		 EndIf
+
+		 $han += 1
+		 $nYaku += 1
+	  EndIf
+	  ; Check for Iipeikou / Double Sequence
+	  If $IipeikouTrue == 1 Then
+		 if $bRyanpeikou == True Then
+			$nYaku += 0
+		 Else
+		 $nYaku += 1
+		 $FullHandName &= "Iipeikou "
+		 EndIf
+		 $han += 1
+	  EndIf
+	  ; Check for Yakuhai / Fanpai
+	  If $YakuhaiTrue == 1 Then
+		 $FullHandName &= "Yakuhai "
+		 $nYaku += 1
+	  EndIf
+	  ; Check for Sanshoku
+	  If $SanshokuDoujinTrue == 1 Then
+
+		 if Concealed() == -1 Then
+			$han+=1
+		 Else
+			$han+=2
+		 EndIf
+
+		 $FullHandName &= "San Shoku "
+		 $nYaku += 1
+	  EndIf
+	  ; Check for Ikkitsuukan
+	  If $IkkitsuukanTrue == 1 Then
+		 if Concealed() == -1 Then
+			$han+=1
+		 Else
+			$han+=2
+		 EndIf
+
+		 $FullHandName &= "Ikkitsuukan "
+		 $nYaku+=1
+	  EndIf
+	  ; Check for Chantaiyao
+	  If $ChantaiyaoTrue == 1 Then
+		 if Concealed() == -1 Then
+			$han+=1
+		 Else
+			$han+=2
+		 EndIf
+
+		 $FullHandName &= "Chantaiyao "
+		 $nYaku+=1
+	  EndIf
+	  ; Check for Honroutou
+	  If $HonroutouTrue == 1 Then
+		 $han+=2
+		 $FullHandName &= "Honroutou "
+		 $nYaku+=1
+	  EndIf
+
+	  ; Check for ToiToi
+	  If $bToiToi == True Then
+		 $han+=2
+		 $FullHandName &= "Toi Toi "
+		 $nYaku+=1
+	  EndIf
+
+	  ; Check for Sanankou
+	  If $bSanankou == True Then
+		 $han+=2
+		 $FullHandName &= "Sanankou "
+		 $nYaku+=1
+	  EndIf
+
+	  ; Check for Sankantsu
+	  If $bSankantsu == True Then
+		 $han+=2
+		 $FullHandName &= "Sankantsu "
+		 $nYaku+=1
+	  EndIf
+
+	  ; Check for Sanshokudoukou
+	  If $bSanshokudoukou == True Then
+		 $han+=2
+		 $FullHandName &= "Sanshoku Doukou "
+		 $nYaku+=1
+	  EndIf
+
+	  ; Check for Shou Sangen
+	  If $bShouSangen == True Then
+		 $han+=2
+		 $FullHandName &= "Shou Sangen "
+		 $nYaku+=1
+	  EndIf
+
+	  ; Check for Honitsu
+	  If $bHonitsu = True Then
+		 if Concealed() == -1 Then
+			$han+=2
+		 Else
+			$han+=3
+		 EndIf
+
+		 if $bChinitsu == True Then
+			; do nuffin
+		 Else
+			$FullHandName &= "Honitsu "
+			$nYaku+=1
+		 EndIf
+	  EndIf
+
+	  ; Check for Junchan Tayao
+	  If $bJunchan == True Then
+		 if Concealed() == -1 Then
+			$han+=2
+		 Else
+			$han+=3
+		 EndIf
+		 $FullHandName &= "Junchan "
+		 $nYaku+=1
+	  EndIf
+
+	  ; Check for Ryanpeikou
+	  If $bRyanpeikou == True Then
+		 $FullHandName &= "Ryanpeikou "
+		 $han += 2
+		 $nYaku+=1
+	  EndIf
+
+	  ;  Check for Chinitsu
+	  if $bChinitsu == True Then
+		 $FullHandName &= "Chinitsu "
+		 $han += 3
+		 $nYaku+=1
+	  EndIf
+	  #EndRegion Yaku-Ifs
+   ; Calculate Fu after doing Han.
+   FuMain()
+   PointCalculation()
+   $FullHandName &= "Dora " & $nDora & " "
+   $FullHandName &= " [Han: " & $han & " Fu: " & $fu & "]"
+   $FullHandName &= "   Yaku: " & $nYaku
+   $FullHandName &= " (" & $handworth & ")"
+   GUICtrlSetData($fullNameOfHand, $FullHandName)
+   #EndRegion Normal Yaku
+EndIf
+EndFunc
+
+; Honitsu/Chinitsu for 7 Pairs
+Func Itsu()
+   $bHonitsu = False
+   $bChinitsu = False
+
+   $suit = -1
+   ; Find any suit tile
+   for $i=1 to 13 Step 2
+	  If $hand[$i] >= 0 AND $hand[$i] <= 9 Then
+		 if $suit == -1 OR $suit == 1 Then
+			; No man was found prior, or a man was found prior, everything is ok!
+			$suit = 1
+		 Else
+			; A tile other than man has been found as the $suit is no longer -1 or is equal to 1
+			 $bHonitsu = False
+			 return
+		 EndIf
+	  elseif $hand[$i] >= 10 AND $hand[$i] <= 19 Then
+		 if $suit == -1 OR $suit == 2 Then
+			; No man Sou found prior, or a Sou was found prior, everything is ok!
+			$suit = 2
+		 Else
+			; A tile other than Sou has been found as the $suit is no longer -1 or is equal to 2
+			 $bHonitsu = False
+			 return
+		 EndIf
+	  elseif $hand[$i] >= 20 AND $hand[$i] <= 29 Then
+		 if $suit == -1 OR $suit == 3 Then
+			; No Pin found prior, or a Pin was found prior, everything is ok!
+			$suit = 3
+		 Else
+			; A tile other than Sou has been found as the $suit is no longer -1 or is equal to 3
+			 $bHonitsu = False
+			 return
+		 EndIf
+	  EndIf
+   Next
+   ;msgbox(0, "Honitsu Passes", $suit)
+   $bHonitsu = True
+
+   if NoHonours() == 1 Then
+	  $bChinitsu = True
+   EndIf
+
+EndFunc
+
+; Chinitsu is a Honitsu without honours
+Func Chinitsu()
+   $bChinitsu = False
+
+   if $bHonitsu == True AND NoHonours() == 1 Then
+	  $bChinitsu = True
+   EndIf
+
+EndFunc
+
+; Ryanpeikou
+; The hand contains two different Iipeikou’s. Must be concealed.
+Func Ryanpeikou()
+   $bRyanpeikou = False
+
+   If $IipeikouTrue == 0 Then
+	  Return; No need to check since this is 2 iipeikou
+   EndIf
+
+   ; If there aren't any sequences no point in checking.
+   if NoChi() == 1 Then
+	  $bRyanpeikou = False
 	  return
    EndIf
 
-   ; 13 Orphans Exception
-
-   ; Check if atleast Tiles 1,2,3 5,6,7 9,10,11 13,14,15 & 17,18 are not empty.
-   NotFilledMin()
-
-   ; Check for Yaku
-   Pinfu()
-   Tanyao()
-   Iipeikou()
-   Yakuhai()
-   Sanshoku_Doujin()
-   Ikkitsuukan()
-   Chantaiyao()
-   Honroutou()
-   ToiToi()
-   Sanankou()
-   Sankantsu()
-   Sanshokudoukou()
-   Shou_Sangen()
-   Honitsu()
-   ; End yaku
-
-   ; Check for Pinfu / No Point
-   If $pinfuTrue == 1 Then
-	  $FullHandName &= "Pinfu "
-	  $han += 1
-	  $nYaku += 1
-   EndIf
-   ; Check for Tanyao / All Simples
-   If $tanyaoTrue == 1 Then
-	  ; Check if it's a Tanyao (Closed Hand Tanyao) or a Kuitan (Open Hand Tanyao)
-	  if Concealed() == -1 Then
-		 $FullHandName &= "Kuitan "
-	  Else
-		 $FullHandName &= "Tanyao "
-	  EndIf
-
-	  $han += 1
-	  $nYaku += 1
-   EndIf
-   ; Check for Iipeikou / Double Sequence
-   If $IipeikouTrue == 1 Then
-	  $FullHandName &= "Iipeikou "
-	  $han += 1
-	  $nYaku += 1
-   EndIf
-   ; Check for Yakuhai / Fanpai
-   If $YakuhaiTrue == 1 Then
-	  $FullHandName &= "Yakuhai "
-	  $nYaku += 1
-   EndIf
-   ; Check for Sanshoku
-   If $SanshokuDoujinTrue == 1 Then
-
-	  if Concealed() == -1 Then
-		 $han+=1
-	  Else
-		 $han+=2
-	  EndIf
-
-	  $FullHandName &= "San Shoku "
-	  $nYaku += 1
-   EndIf
-   ; Check for Ikkitsuukan
-   If $IkkitsuukanTrue == 1 Then
-	  if Concealed() == -1 Then
-		 $han+=1
-	  Else
-		 $han+=2
-	  EndIf
-
-	  $FullHandName &= "Ikkitsuukan "
-	  $nYaku+=1
-   EndIf
-   ; Check for Chantaiyao
-   If $ChantaiyaoTrue == 1 Then
-	  if Concealed() == -1 Then
-		 $han+=1
-	  Else
-		 $han+=2
-	  EndIf
-
-	  $FullHandName &= "Chantaiyao "
-	  $nYaku+=1
-   EndIf
-   ; Check for Honroutou
-   If $HonroutouTrue == 1 Then
-	  $han+=2
-	  $FullHandName &= "Honroutou "
-	  $nYaku+=1
+   ; If it's not concealed then no points.
+   if Concealed() == -1 Then
+	  $bRyanpeikou = False
+	  return
    EndIf
 
-   ; Check for ToiToi
-   If $bToiToi == True Then
-	  $han+=2
-	  $FullHandName &= "Toi Toi "
-	  $nYaku+=1
+   ; Possible scenarios:
+   ; 0/1  2/3
+   ; 0/2  1/3
+   ; 0/3  1/2
+   if $set[0] == $set[1] AND $set[2] == $set[3] Then
+	  $bRyanpeikou = True
+   ElseIf $set[0] == $set[2] AND $set[1] == $set[3] Then
+	  $bRyanpeikou = True
+   ElseIf $set[0] == $set[3] AND $set[2] == $set[1] Then
+	  $bRyanpeikou = True
+   Else
+	  $bRyanpeikou = False
+   EndIf
+EndFunc
+
+; Junchan Tayao
+Func Junchan()
+   $bJunchan = False
+
+   ; A junchan is basically a Chantaiyao without honours
+   If $ChantaiyaoTrue == 1 AND NoHonours() == 1 Then
+	  $bJunchan = True
    EndIf
 
-   ; Check for Sanankou
-   If $bSanankou == True Then
-	  $han+=2
-	  $FullHandName &= "Sanankou "
-	  $nYaku+=1
-   EndIf
-
-   ; Check for Sankantsu
-   If $bSankantsu == True Then
-	  $han+=2
-	  $FullHandName &= "Sankantsu "
-	  $nYaku+=1
-   EndIf
-
-   ; Check for Sanshokudoukou
-   If $bSanshokudoukou == True Then
-	  $han+=2
-	  $FullHandName &= "Sanshoku Doukou "
-	  $nYaku+=1
-   EndIf
-
-   ; Check for Shou Sangen
-   If $bShouSangen == True Then
-	  $han+=2
-	  $FullHandName &= "Shou Sangen "
-	  $nYaku+=1
-   EndIf
-
-   ; Check for Honitsu
-   If $bHonitsu = True Then
-	  if Concealed() == -1 Then
-		 $han+=2
-	  Else
-		 $han+=3
-	  EndIf
-	  $FullHandName &= "Honitsu "
-	  $nYaku+=1
-   EndIf
-
-
-   $FullHandName &= " [Han: " & $han & " Fu: " & $fu & "]"
-   $FullHandName &= "   Amount of Yaku: " & $nYaku
-   GUICtrlSetData($fullNameOfHand, $FullHandName)
 EndFunc
 
 ; Honitsu / Dirty Flush
@@ -254,7 +473,7 @@ Func Honitsu()
 		 EndIf
 	  EndIf
    Next
-   msgbox(0, "Honitsu Passes", $suit)
+   ;msgbox(0, "Honitsu Passes", $suit)
    $bHonitsu = True
 EndFunc
 
@@ -479,10 +698,10 @@ Func Ikkitsuukan()
 
    ; Ikkitsukan
    For $i = 10 to 30 Step 10
-   If ChiOf($i+1) == 1 AND ChiOf($i+4) == 1 AND ChiOf($i+7) Then
-	  $IkkitsuukanTrue = 1
-	  return
-   EndIf
+	  If ChiOf($i+1) == 1 AND ChiOf($i+4) == 1 AND ChiOf($i+7) == 1 Then
+		 $IkkitsuukanTrue = 1
+		 return
+	  EndIf
    Next
    $IkkitsuukanTrue = 0
 EndFunc
