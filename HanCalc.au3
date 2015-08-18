@@ -30,9 +30,13 @@ Global $bJunchan = False
 Global $bRyanpeikou = False
 Global $bChinitsu = False
 
+; Yakuman Declarations
+
 ; Classifications
 Global $boolYakuman = False
 Global $boolDoubleYakuman = False
+
+
 
 Func Calculate()
    YakuSitMain()
@@ -132,10 +136,12 @@ Func Calculate()
 			$han += 3
 			$nYaku+=1
 		 EndIf
-
+		 FuSevenPairs()
+		 PointCalculation()
 		 $FullHandName &= "Chiitoitsu "
 		 $FullHandName &= " [Han: " & $han & " Fu: " & $fu & "]"
-		 $FullHandName &= "   Amount of Yaku: " & $nYaku
+		 $FullHandName &= "   Yaku: " & $nYaku
+		 $FullHandName &= " (" & $handworth & ")"
 		 GUICtrlSetData($fullNameOfHand, $FullHandName)
 		 return
 	  EndIf

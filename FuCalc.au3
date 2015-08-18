@@ -124,5 +124,5 @@ Func WinFu()
 EndFunc
 
 Func FuSevenPairs()
-   return 25 ; Seven pairs = 25 fu
+   $fu = 25 ; Seven pairs = 25 fu
 EndFunc
