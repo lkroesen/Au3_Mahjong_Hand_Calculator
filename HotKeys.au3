@@ -1,7 +1,7 @@
 HotKeySet("{F1}", "nullifyOriginChange")
 HotKeySet("{RIGHT}", "selectNext")
 HotKeySet("{LEFT}", "selectPrev")
-HotKeySet("{F9}", "status")
+HotKeySet("{F9}", "NineGatesEnabler")
 HotKeySet("{F5}", "Checker")
 HotKeySet("{F7}", "SevenPairs")
 HotKeySet("{DEL}","Deleter")
@@ -15,6 +15,24 @@ Global $set[7]
 Global $SevenPairsEnabled = 0
 Global $OpenWaitEnabled = 0
 Global $Kokushi = false
+Global $NineGates = false
+Global $NineWait = False
+Global $ThirtWait = False
+
+; Enabler or Disabler of Seven Pairs (This also works for Kokushi Mushou)
+Func NineGatesEnabler()
+
+   if $NineGates == false Then
+	  $NineGates = true
+	  GUICtrlSetData($debug, "Enabled Nine Gates")
+	  GUICtrlSetData($fullNameOfHand, "For Nine Gates, make sure you follow 1-1-1-2-3-4-5-6-7-8-9-9-9 and then the extra tile")
+   Else
+	  $NineGates = false
+	  GUICtrlSetData($debug, "Disabled Nine Gates")
+   EndIf
+
+EndFunc
+
 
 ; Enabler or Disabler of Seven Pairs (This also works for Kokushi Mushou)
 Func SevenPairs()
@@ -84,8 +102,7 @@ Func Checker()
 
 		 $set[6] = CheckPairs($hand[13],$hand[14])
 		 $debugString &= "Pair 7:  Pair of " & TileTranslator($set[6]-200) & "    "
-
-   Else
+  Else
    ; Normal 4 x 3 chi/pon & double
 	  $set[0] = CheckHand($hand[1],$hand[2],$hand[3],$hand[4])
 	  $set[1] = CheckHand($hand[5],$hand[6],$hand[7],$hand[8])
@@ -93,6 +110,11 @@ Func Checker()
 	  $set[3] = CheckHand($hand[13],$hand[14],$hand[15],$hand[16])
 	  ; The double
 	  $set[4] = CheckPairs($hand[17], $hand[18])
+
+	  If $set[4] == -1 Then
+		 msgbox(0, "Mistake in Pair", "Check pairs")
+		 Return
+	  EndIf
 
 	  for $i = 0 to 3 Step 1
 		 $debugString &= " [Set " & $i+1 & "]: "
@@ -104,6 +126,8 @@ Func Checker()
 			$debugString &= "Chi with value: " & ChiTranslator($set[$i])
 		 else
 			$debugString &= "I do not know what this set is. error value: " & $set
+			msgbox(0, "Mistake in a set", "Not a mahjong set at Set:" & $i+1)
+			Return
 		 EndIf
 	  Next
 	  $debugString &= "    [Pair 1]: Pair of " & TileTranslator($set[4]-200)

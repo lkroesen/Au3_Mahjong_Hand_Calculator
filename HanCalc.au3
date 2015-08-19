@@ -46,7 +46,8 @@ Global $bChinroutou = False
 Global $boolYakuman = False
 Global $boolDoubleYakuman = False
 
-
+; Extra
+Global $boolPair = false
 
 Func Calculate()
    YakuSitMain()
@@ -83,14 +84,39 @@ Func Calculate()
    If $YakuSitHan == "yakuman" Then
 	  $boolYakuman = True
    EndIf
+
    Daisangen()
    Shousuushii()
    DaiSuushii()
+   NineGates()
+   SuuKantsu()
+   SuuAnkou()
+   Ryuuiisou()
+   Tsuu_iisou()
+   Chinroutou()
+   Kokushi_Musou()
    #EndRegion
 
-   #Region Kokushi Musou / 13 orphans
+   ; Exception for Nine gates
+   if $NineGates == True Then
+	  If $bChuurenPoutou == True Then
+		 $FullHandName &= "Nine Gates "
+	  Else
+		 GUICtrlSetData($fullNameOfHand, "Not Nine Gates")
+		 return
+	  EndIf
 
-   #EndRegion
+	  FuMain()
+	  if $boolDoubleYakuman == True Then
+		 DoubleYakumanScr()
+	  Else
+		 YakumanScr()
+	  EndIf
+	  $FullHandName &= "(" & $handworth & ")"
+	  GUICtrlSetData($fullNameOfHand, $FullHandName)
+	  Return
+   EndIf
+
 
    if $boolYakuman == True Then
 	  If $bDaisangen == True Then
@@ -103,6 +129,30 @@ Func Calculate()
 
 	  If $bDaiSuushii == True Then
 		 $FullHandName &= "Dai Suushii / Big Four Winds "
+	  EndIf
+
+	  if $bSuuAnkou == true Then
+		 $FullHandName &= "Suu ankou / Four Concealed Triplets "
+	  EndIf
+
+	  if $bRyuuiisou == true Then
+		 $FullHandName &= "Ryuuiisou / All Green "
+	  EndIf
+
+	  if $bSuuKantsu == true Then
+		 $FullhandName &= "Suu kantsu / Four kongs "
+	  EndIf
+
+	  if $bTsuuIisou == true Then
+		 $FullhandName &= "Tsuu iisou / All Honours "
+	  EndIf
+
+	  if $bChinroutou = true Then
+		 $FullHandName &= "Chinroutou / All Terminals "
+	  EndIf
+
+	  If $bKokushi = True Then
+		 $FullHandName &= "Kokushi musou / 13 Orphans "
 	  EndIf
 
 	  FuMain()
@@ -368,6 +418,240 @@ EndIf
 EndFunc
 
 #Region Yakuman Func
+; 13 Orphans
+Func Kokushi_Musou()
+   $bKokushi = False
+
+   If SearchHandFor($cMAN1) == 1 Then
+	  If SearchHandFor($cMAN9) == 1 Then
+		 if SearchHandFor($cSOU1) == 1 Then
+			if SearchHandFor($cSOU9) == 1 Then
+			   if SearchHandFor($cPIN1) == 1 Then
+				  if SearchHandFor($cPIN9) == 1 Then
+					 if SearchHandFor($cTON) == 1 Then
+						if SearchHandFor($cNAN) == 1 Then
+						   if SearchHandFor($cSHAA) == 1 Then
+							  if SearchHandFor($cPEI) == 1 Then
+								 if SearchHandFor($cCHUN) == 1 Then
+									if SearchHandFor($cHAKU) == 1 Then
+									   if SearchHandFor($cHATSU) == 1 Then
+										  If FinalKukoshiCheck() == true Then
+											 YakumanTrue()
+											 $bKokushi = True
+											 If $waitType == 13 Then
+												YakuManTrue()
+											 EndIf
+										  EndIf
+									   EndIf
+									EndIf
+								 EndIf
+							  EndIf
+						   EndIf
+						EndIf
+					 EndIf
+				  EndIf
+			   EndIf
+			EndIf
+		 EndIf
+	  EndIf
+   EndIf
+EndFunc
+
+; FinalKukoshiCheck()
+Func FinalKukoshiCheck()
+   If $hand[14] == ($cMAN1)  or $hand[14] == ($cMAN9)  or $hand[14] == ($cSOU1)  or $hand[14] == ($cSOU9)  or $hand[14] == ($cPIN1)  or $hand[14] == ($cPIN9)  or $hand[14] == ($cTON)  or $hand[14] == ($cNAN)  or $hand[14] == ($cSHAA)  or $hand[14] == ($cPEI)  or $hand[14] == ($cCHUN)  or $hand[14] == ($cHAKU)  or $hand[14] == ($cHATSU)  Then
+	  return True
+   EndIf
+
+   return False
+EndFunc
+
+; Chinroutou / All Terminals
+Func Chinroutou()
+   $bChinroutou = False
+
+   For $i = 1 to 18 Step 1
+	  if $hand[$i] == $cMAN1 or $hand[$i] == $cMAN9 or $hand[$i] == $cSOU1 or $hand[$i] == $cSOU9 or $hand[$i] == $cPIN1 or $hand[$i] == $cPIN9 or $hand[$i] == "empty" Then
+		 if $i == 18 Then
+			$bTsuuIisou = true
+			YakumanTrue()
+		 EndIf
+	  Else
+		 ExitLoop
+	  EndIf
+   Next
+
+EndFunc
+
+; Tsuu iisou / All Honours
+Func Tsuu_iisou()
+   $bTsuuIisou = False
+
+   For $i = 1 to 18 Step 1
+	  if $hand[$i] == $cTON or $hand[$i] == $cNAN or $hand[$i] == $cSHAA or $hand[$i] == $cPEI or $hand[$i] == $cCHUN or $hand[$i] == $cHATSU or $hand[$i] == $cHAKU or $hand[$i] == "empty" Then
+		 if $i == 18 Then
+			$bTsuuIisou = true
+			YakumanTrue()
+		 EndIf
+	  Else
+		 ExitLoop
+	  EndIf
+   Next
+
+EndFunc
+
+; Suu kantsu / 4 kongs
+Func SuuKantsu()
+   $bSuuKantsu = false
+
+   if $boolDoubleYakuman == True Then
+	  Return
+   EndIf
+
+   For $i = 0 to 3 Step 1
+	  if $set[$i] >= 80 and $set[$i] <= 199 Then
+		 ; Do nothing
+	  Else
+		 Return
+	  EndIf
+   Next
+
+   YakumanTrue()
+   $bSuuKantsu = True
+EndFunc
+
+; Ryuuiisou / All Green
+Func Ryuuiisou()
+   $bRyuuiisou = False
+
+   For $i = 1 to 18 Step 1
+	  if $hand[$i] == $cSOU2 or $hand[$i] == $cSOU3 or $hand[$i] == $cSOU4 or $hand[$i] == $cSOU6 or $hand[$i] == $cSOU8 or $hand[$i] == $cHATSU or $hand[$i] == "empty" Then
+		 $bRyuuiisou = true
+		 if $i == 18 Then
+			YakumanTrue()
+		 EndIf
+	  Else
+		 ExitLoop
+	  EndIf
+   Next
+
+EndFunc
+
+; 4 Concealed Trips
+Func SuuAnkou()
+   $bSuuAnkou = False
+
+   if Concealed() == -1 Then
+	  Return
+   EndIf
+
+   For $i = 0 to 3 Step 1
+	  if $set[$i] >= 40 and $set[$i] <= 199 Then
+	  ; Do nothing
+	  Else
+		 Return
+	  EndIf
+   Next
+
+   $bSuuAnkou = true
+   YakumanTrue()
+
+   If $boolPair == True Then
+	  YakumanTrue()
+   EndIf
+
+
+EndFunc
+
+; Chuuren Poutou
+Func NineGates()
+   $bChuurenPoutou = False
+
+   if Concealed() == -1 Then
+	  Return
+   EndIf
+
+   if $hand[1] == 0 Then
+	  if $hand[2] == 0 and $hand[3] == 0 Then
+		 if $hand[4] == 1 Then
+			if $hand[5] == 2 Then
+			   if $hand[6] == 3 Then
+				  if $hand[7] == 4 or $hand[7] == 5 Then
+					 if $hand[8] == 6 Then
+						if $hand[9] == 7 Then
+						   if $hand[10] == 8 Then
+							  if $hand[11] == 9 and $hand[12] == 9 and $hand[13] == 9 Then
+								 if $hand[14] >= 0 and $hand[14] <= 9 Then
+									$bChuurenPoutou = true
+									YakumanTrue()
+									if $waitType == 9 Then
+									   YakumanTrue()
+									EndIf
+								 EndIf
+							  EndIf
+						   EndIf
+						EndIf
+					 EndIf
+				  EndIf
+			   EndIf
+			EndIf
+		 EndIf
+	  EndIf
+   elseif $hand[1] == 10 Then
+	  if $hand[2] == 10 and $hand[3] == 10 Then
+		 if $hand[4] == 11 Then
+			if $hand[5] == 12 Then
+			   if $hand[6] == 13 Then
+				  if $hand[7] == 14 or $hand[7] == 15 Then
+					 if $hand[8] == 16 Then
+						if $hand[9] == 17 Then
+						   if $hand[10] == 18 Then
+							  if $hand[11] == 19 and $hand[12] == 19 and $hand[13] == 19 Then
+								 if $hand[14] >= 10 and $hand[14] <= 19 Then
+									$bChuurenPoutou = true
+									YakumanTrue()
+									if $waitType == 9 Then
+									   YakumanTrue()
+									EndIf
+								 EndIf
+							  EndIf
+						   EndIf
+						EndIf
+					 EndIf
+				  EndIf
+			   EndIf
+			EndIf
+		 EndIf
+	  EndIf
+   elseif $hand[1] == 20 Then
+	  if $hand[2] == 20 and $hand[3] == 20 Then
+		 if $hand[4] == 21 Then
+			if $hand[5] == 22 Then
+			   if $hand[6] == 23 Then
+				  if $hand[7] == 24 or $hand[7] == 25 Then
+					 if $hand[8] == 26 Then
+						if $hand[9] == 27 Then
+						   if $hand[10] == 28 Then
+							  if $hand[11] == 29 and $hand[12] == 29 and $hand[13] == 29 Then
+								 if $hand[14] >= 20 and $hand[14] <= 29 Then
+									$bChuurenPoutou = true
+									YakumanTrue()
+									if $waitType == 9 Then
+									   YakumanTrue()
+									EndIf
+								 EndIf
+							  EndIf
+						   EndIf
+						EndIf
+					 EndIf
+				  EndIf
+			   EndIf
+			EndIf
+		 EndIf
+	  EndIf
+   EndIf
+EndFunc
+
 ; Big Four Winds / Dai Suushii
 Func DaiSuushii()
    $bDaiSuushii = False

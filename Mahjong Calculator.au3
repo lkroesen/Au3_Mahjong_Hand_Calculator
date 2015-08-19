@@ -44,6 +44,7 @@ $miEdge 		=	GUICtrlCreateMenuItem("Edge ( 1-2 <- w1 or 8-9 <- w7 )", $menuItemWa
 $miClosed 		=	GUICtrlCreateMenuItem("Closed ( 2-4 <- w3 )", $menuItemWait)
 $miSingle 		=	GUICtrlCreateMenuItem("Single ( 5-5 <- w5 )", $menuItemWait)
 $miOpen 		=	GUICtrlCreateMenuItem("Open ( 2-3 <- w1 or w4 )", $menuItemWait)
+$mi7			=	GUICtrlCreateMenuItem("Pair (Suu Ankou Yakuman)", $menuItemWait)
 $mi9 			=	GUICtrlCreateMenuItem("Nine (Nine Gates Yakuman)", $menuItemWait)
 $mi13			=	GUICtrlCreateMenuItem("13 (Kokushi Musou Yakuman)", $menuItemWait)
 
@@ -290,19 +291,34 @@ While 1
 		 Case $miEdge
 			$waitType = 1
 			$OpenWaitEnabled = 0
+			$boolPair = False
 			GUICtrlSetData($debug, "Edge Wait, waiting on a tile that completes a chi of 2-3 or 8-9, 1 or 7")
 		 Case $miClosed
 			$waitType = 2
 			$OpenWaitEnabled = 0
+			$boolPair = False
 			GUICtrlSetData($debug, "Closed Wait, waiting on a a tile that is between 2 tiles, ex: waiting on 4 when you have tiles 3 and 5")
 		 Case $miSingle
 			$waitType = 3
 			$OpenWaitEnabled = 0
+			$boolPair = False
 			GUICtrlSetData($debug, "Single Wait, waiting on one tile")
 		 Case $miOpen
 			$waitType = 4
+			$boolPair = False
 			$OpenWaitEnabled = 1
 			GUICtrlSetData($debug, "Open Wait, waiting on more than 1 tile to win")
+		 Case $mi7
+			$waitType = 3
+			$boolPair = True
+		 Case $mi9
+			$NineGates = True
+			$boolPair = False
+			$waitType = 9
+		 Case $mi13
+			$Kokushi = True
+			$boolPair = False
+			$waitType = 13
 		 Case $miRonWin
 			$WinOnRon = True
 			GUICtrlSetData($debug, "Won on a discard of another player")
