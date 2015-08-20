@@ -93,6 +93,9 @@ Func MhjWrite()
    IniWrite("Hand.mhj", "Hand Data", "Ron Win", $WinOnRon)
 
    ; Table Data
+   For $i = 0 to 3 Step 1
+	  IniWrite("Hand.mhj", "Table Data", "Open" & $i, $setsThatAreOpen[$i+1])
+   Next
    IniWrite("Hand.mhj", "Table Data", "Round Wind", $rWind)
    IniWrite("Hand.mhj", "Table Data", "Seat Wind", $sWind)
    IniWrite("Hand.mhj", "Table Data", "Dealer", $scrDealer)
