@@ -10,6 +10,7 @@ Global $rWind
 Global $sWind
 Global $FullHandName = ""
 Global $nYaku = 0
+Global $exMessage = ""
 
 ; Yaku Declarations
 Global $pinfuTrue = 0
@@ -72,6 +73,7 @@ Func Calculate()
 	  ; No Calculations, the hand is a mangan.
 	  $han = "Mangan"
 	  FuMain()
+	  $exMessage = $FullHandName
 	  $FullHandName &= " [Han: " & $han & " Fu: " & $fu & "]"
 	  $FullHandName &= "   Amount of Yaku: " & $nYaku
 	  GUICtrlSetData($fullNameOfHand, $FullHandName)
@@ -110,6 +112,7 @@ Func Calculate()
 	  Else
 		 YakumanScr()
 	  EndIf
+	  $exMessage = $FullHandName
 	  $FullHandName &= "(" & $handworth & ")"
 	  GUICtrlSetData($fullNameOfHand, $FullHandName)
 	  $boolYakuman = True
@@ -160,6 +163,7 @@ Func Calculate()
 	  Else
 		 YakumanScr()
 	  EndIf
+	  $exMessage = $FullHandName
 	  $FullHandName &= "(" & $handworth & ")"
 	  GUICtrlSetData($fullNameOfHand, $FullHandName)
 	  Return
@@ -220,6 +224,7 @@ Func Calculate()
 		 FuSevenPairs()
 		 PointCalculation()
 		 $FullHandName &= "Chiitoitsu "
+		 $exMessage = $FullHandName
 		 $FullHandName &= " [Han: " & $han & " Fu: " & $fu & "]"
 		 $FullHandName &= "   Yaku: " & $nYaku
 		 $FullHandName &= " (" & $handworth & ")"
@@ -408,6 +413,7 @@ Func Calculate()
    FuMain()
    PointCalculation()
    $FullHandName &= "Dora " & $nDora & " "
+   $exMessage = $FullHandName
    $FullHandName &= " [Han: " & $han & " Fu: " & $fu & "]"
    $FullHandName &= "   Yaku: " & $nYaku
    $FullHandName &= " (" & $handworth & ")"
@@ -536,14 +542,14 @@ Func Ryuuiisou()
 
    For $i = 1 to 18 Step 1
 	  if $hand[$i] == $cSOU2 or $hand[$i] == $cSOU3 or $hand[$i] == $cSOU4 or $hand[$i] == $cSOU6 or $hand[$i] == $cSOU8 or $hand[$i] == $cHATSU or $hand[$i] == "empty" Then
-		 $bRyuuiisou = true
-		 if $i == 18 Then
-			YakumanTrue()
-		 EndIf
+		 ;msgbox(0, "Green", TileTranslator($hand[$i]))
 	  Else
-		 ExitLoop
+		 return
 	  EndIf
    Next
+
+   $bRyuuiisou = true
+   YakumanTrue()
 
 EndFunc
 

@@ -49,20 +49,53 @@ Func MhjWrite()
    ; TODO, Concealed, Set data
 
    ; Hand Data
-   IniWrite("Hand.mhj", "Hand Data", "Type", "")
-   IniWrite("Hand.mhj", "Hand Data", "Hand Name", "")
-   IniWrite("Hand.mhj", "Hand Data", "Values", "")
-   IniWrite("Hand.mhj", "Hand Data", "Total Value", "")
+   if $NineGates == True Then
+	  IniWrite("Hand.mhj", "Hand Data", "Type", "G")
+   ElseIf $bKokushi == True Then
+	  IniWrite("Hand.mhj", "Hand Data", "Type", "K")
+   ElseIf $SevenPairsEnabled == 1 Then
+	  IniWrite("Hand.mhj", "Hand Data", "Type", "S")
+   Else
+	  IniWrite("Hand.mhj", "Hand Data", "Type", "N")
+   EndIf
+
+   IniWrite("Hand.mhj", "Hand Data", "Hand Name", $exMessage)
+   IniWrite("Hand.mhj", "Hand Data", "Values", GUICtrlRead($inputPoints))
+   IniWrite("Hand.mhj", "Hand Data", "Total Value", $handworth)
    IniWrite("Hand.mhj", "Hand Data", "Han", $han)
    IniWrite("Hand.mhj", "Hand Data", "Fu", $fu)
-   IniWrite("Hand.mhj", "Hand Data", "Wait", "")
-   IniWrite("Hand.mhj", "Hand Data", "Riichi", "")
-   IniWrite("Hand.mhj", "Hand Data", "Ron", "")
+
+
+   if $waitType == 1 Then
+	  IniWrite("Hand.mhj", "Hand Data", "Wait", "edge")
+   elseif $waitType == 2 Then
+	  IniWrite("Hand.mhj", "Hand Data", "Wait", "closed")
+   elseif $waitType == 3 and $boolPair == True Then
+	  IniWrite("Hand.mhj", "Hand Data", "Wait", "pair")
+   elseif $waitType == 3 Then
+	  IniWrite("Hand.mhj", "Hand Data", "Wait", "single")
+   elseif $waitType == 4 Then
+	  IniWrite("Hand.mhj", "Hand Data", "Wait", "open")
+   elseif $waitType == 9 Then
+	  IniWrite("Hand.mhj", "Hand Data", "Wait", "nine")
+   elseif $waitType == 13 Then
+	  IniWrite("Hand.mhj", "Hand Data", "Wait", "thirteen")
+   EndIf
+
+   If GuiCtrlRead($checkboxRiichi) == $GUI_CHECKED Then
+	  IniWrite("Hand.mhj", "Hand Data", "Riichi", "YES")
+   ElseIf GuiCtrlRead($checkboxDoubleRiichi) == $GUI_CHECKED Then
+	  IniWrite("Hand.mhj", "Hand Data", "Riichi", "YES")
+   Else
+	  IniWrite("Hand.mhj", "Hand Data", "Riichi", "NO")
+   EndIf
+
+   IniWrite("Hand.mhj", "Hand Data", "Ron Win", $WinOnRon)
 
    ; Table Data
    IniWrite("Hand.mhj", "Table Data", "Round Wind", $rWind)
    IniWrite("Hand.mhj", "Table Data", "Seat Wind", $sWind)
-   IniWrite("Hand.mhj", "Table Data", "Dealer", "")
+   IniWrite("Hand.mhj", "Table Data", "Dealer", $scrDealer)
 
    ; Dora Data
    IniWrite("Hand.mhj", "Dora Data", "nDora", $nDora)

@@ -34,13 +34,13 @@ Func rndm()
    $RNG = Random(1,4,1)
 
    if $RNG == 1 Then
-	  Return "Ton                           East"
+	  Return $cTON
    elseif $RNG == 2 Then
-	  Return "Nan                         South"
+	  Return $cNAN
    elseif $RNG == 3 Then
-	  Return "Shaa                        West"
+	  Return $cSHAA
    Else
-	  Return "Pei                           North"
+	  Return $cPEI
    EndIf
 
 EndFunc
