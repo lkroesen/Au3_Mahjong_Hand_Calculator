@@ -72,6 +72,35 @@ Func Pon($tile1,$tile2,$tile3,$tile4)
 	  EndIf
    EndIf
 
+   #Region red5
+   ; Exception for red 5 tiles
+   if $tile1 == $cMAN5r or $tile1 == $cMAN5 Then
+	  if $tile2 == $cMAN5 or $tile2 == $cMAN5r Then
+		  if $tile3 == $cMAN5 or $tile3 == $cMAN5r Then
+			  if $tile4 == "empty" Then
+				  return 40+$cMAN5
+			   EndIf
+		 EndIf
+	  EndIf
+   elseif $tile1 == $cSOU5r or $tile1 == $cSOU5 Then
+	  if $tile2 == $cSOU5 or $tile2 == $cSOU5r Then
+		  if $tile3 == $cSOU5 or $tile3 == $cSOU5r Then
+			  if $tile4 == "empty" Then
+				  return 40+$cSOU5
+			   EndIf
+		 EndIf
+	  EndIf
+   elseif $tile1 == $cPIN5r or $tile1 == $cPIN5 Then
+	  if $tile2 == $cPIN5 or $tile2 == $cPIN5r Then
+		  if $tile3 == $cPIN5 or $tile3 == $cPIN5r Then
+			  if $tile4 == "empty" Then
+				  return 40+$cPIN5
+			   EndIf
+		 EndIf
+	  EndIf
+   EndIf
+   #EndRegion red5
+
    return Chi($tile1,$tile2,$tile3,$tile4)
 EndFunc
 
@@ -83,9 +112,39 @@ Func Kan($tile1,$tile2,$tile3,$tile4)
 	  if $tile3 == $tile4 Then
 		 if $tile1 == $tile4 Then
 		 return 80+$tile1
+		 EndIf
 	  EndIf
    EndIf
-EndIf
+
+   #Region red5
+   ; Exception for red 5 tiles
+   if $tile1 == $cMAN5r or $tile1 == $cMAN5 Then
+	  if $tile2 == $cMAN5 or $tile2 == $cMAN5r Then
+		  if $tile3 == $cMAN5 or $tile3 == $cMAN5r Then
+			  if $tile4 == $cMAN5 or $tile4 == $cMAN5r Then
+				  return 80+$cMAN5
+			   EndIf
+		 EndIf
+	  EndIf
+   elseif $tile1 == $cSOU5r or $tile1 == $cSOU5 Then
+	  if $tile2 == $cSOU5 or $tile2 == $cSOU5r Then
+		  if $tile3 == $cSOU5 or $tile3 == $cSOU5r Then
+			  if $tile4 == $cSOU5 or $tile4 == $cSOU5r Then
+				  return 80+$cSOU5
+			   EndIf
+		 EndIf
+	  EndIf
+   elseif $tile1 == $cPIN5r or $tile1 == $cPIN5 Then
+	  if $tile2 == $cPIN5 or $tile2 == $cPIN5r Then
+		  if $tile3 == $cPIN5 or $tile3 == $cPIN5r Then
+			  if $tile4 == $cPIN5 or $tile4 == $cPIN5r Then
+				  return 80+$cPIN5
+			   EndIf
+		 EndIf
+	  EndIf
+   EndIf
+   #EndRegion red5
+
    return Pon($tile1,$tile2,$tile3,$tile4)
 EndFunc
 

@@ -52,10 +52,8 @@ Global $boolPair = false
 Func Calculate()
    YakuSitMain()
    ; Get wind directions off of GUI
-   If getWinds() == false Then
-	  GUICtrlSetData($debug, "Calculation aborted due to Winds not initialized")
-	  Return
-   EndIf
+   getWinds()
+
 
    $FullHandName = ""
    $FullHandName &= $YakuSitName
@@ -114,6 +112,7 @@ Func Calculate()
 	  EndIf
 	  $FullHandName &= "(" & $handworth & ")"
 	  GUICtrlSetData($fullNameOfHand, $FullHandName)
+	  $boolYakuman = True
 	  Return
    EndIf
 
@@ -441,6 +440,7 @@ Func Kokushi_Musou()
 											 If $waitType == 13 Then
 												YakuManTrue()
 											 EndIf
+											 Return
 										  EndIf
 									   EndIf
 									EndIf
@@ -454,6 +454,16 @@ Func Kokushi_Musou()
 			EndIf
 		 EndIf
 	  EndIf
+   EndIf
+
+   ; If Kokushi is not true, check that the hand conssists of 7 pairs.
+   If $SevenPairsEnabled == 1 Then
+	  For $i = 0 to 6 Step 1
+		 if $set[$i] < 0 Then
+			msgbox(0, "Illegal Hand!", "No Yaku found, this means that this hand is illegal!")
+			return
+		 EndIf
+	  Next
    EndIf
 EndFunc
 
@@ -1435,8 +1445,12 @@ Func getWinds()
    ElseIf $rWindTemp == "Pei                           North" Then
 	  $rWind = $cPEI
    Else
-	  MsgBox( 0, "Select a Round Wind!", "Please, select a Round Wind")
-	  return false
+	  If $RandWind == True Then
+		 $rWind = rndm()
+	  Else
+		 MsgBox( 0, "Select a Round Wind!", "Please, select a Round Wind or press F4 to disable this")
+		 return false
+	  EndIf
    EndIf
 
    if $sWindTemp == "Ton                           East" Then
@@ -1448,8 +1462,12 @@ Func getWinds()
    ElseIf $sWindTemp == "Pei                           North" Then
 	  $sWind = $cPEI
    Else
-	  MsgBox( 0, "Select a Seat Wind!", "Please, select a Seat Wind")
-	  return false
+	  If $RandWind == True Then
+		 $sWind = rndm()
+	  Else
+		 MsgBox( 0, "Select a Seat Wind!", "Please, select a Seat Wind or press F4 to disable this")
+		 return false
+	  EndIf
    EndIf
    return true
    ;GUICtrlSetData($debug, "Round wind: " & TileTranslator($rWind) & " Seat Wind: " & TileTranslator($sWind))

@@ -11,6 +11,7 @@
 #include <YakuSituations.au3>
 #include <DoraHandler.au3>
 #include <Scoring.au3>
+#include <CalcExporter.au3>
 
 ; Use arrays for GUI elements might be useful later on.
 Global $piTile[19] ; 0 unused
@@ -27,10 +28,10 @@ $Form1_1 = GUICreate("Mahjong Hand Calculator", 864, 806, 456, 111)
 
 $miHotkeys = GUICtrlCreateMenu("HotKeys")
 $HotKeySubMenu[0] = GUICtrlCreateMenuItem("[F1] Go back to Hand 1 Tile", $miHotkeys)
-$HotKeySubMenu[1] = GUICtrlCreateMenuItem("[F4] Enable Open Wait", $miHotkeys)
+$HotKeySubMenu[1] = GUICtrlCreateMenuItem("[F4] Random Seat && Round Wind", $miHotkeys)
 $HotKeySubMenu[2] = GUICtrlCreateMenuItem("[F5] Run Calculator", $miHotkeys)
 $HotKeySubMenu[3] = GUICtrlCreateMenuItem("[F7] Enable Seven Pairs / Kokushi Mushou", $miHotkeys)
-$HotKeySubMenu[4] = GUICtrlCreateMenuItem("[F9] Debug Status", $miHotkeys)
+$HotKeySubMenu[4] = GUICtrlCreateMenuItem("[F9] Enable Nine Gates", $miHotkeys)
 $HotKeySubMenu[5] = GUICtrlCreateMenuItem("[DEL] Delete Selected Tile from Hand", $miHotkeys)
 $HotKeySubMenu[6] = GUICtrlCreateMenuItem("[->] Go to next Hand Tile", $miHotkeys)
 $HotKeySubMenu[7] = GUICtrlCreateMenuItem("[<-] Go to prev Hand Tile", $miHotkeys)
@@ -51,6 +52,26 @@ $mi13			=	GUICtrlCreateMenuItem("13 (Kokushi Musou Yakuman)", $menuItemWait)
 $menuDealer 	= 	GUICtrlCreateMenu("Dealer")
 $miDealer		=	GUICtrlCreateMenuItem("Dealer", $menuDealer)
 $miNonDealer	=	GUICtrlCreateMenuItem("Non-Dealer", $menuDealer)
+
+$menuCheatSheet				= 	GUICtrlCreateMenu("Hand Values")
+
+$miMangan 					=	GUICtrlCreateMenuItem("Mangan                                8,000      (2,000 / 4,000)",$menuCheatSheet)
+$miHaneman 				=	GUICtrlCreateMenuItem("Haneman                            12,000      (3,000 / 6,000)",$menuCheatSheet)
+$miBaiman 					=	GUICtrlCreateMenuItem("Baiman                                16,000      (4,000 / 8,000)",$menuCheatSheet)
+$miSanbaiman 				=	GUICtrlCreateMenuItem("Sanbaiman                          24,000      (6,000 / 12,000)",$menuCheatSheet)
+$miYakuman 				=	GUICtrlCreateMenuItem("Yakuman                             32,000      (8,000 / 16,000)",$menuCheatSheet)
+$miYakuman 				=	GUICtrlCreateMenuItem("Double Yakuman               64,000      (16,000 / 32,000)",$menuCheatSheet)
+
+$miEMPTY 					=	GUICtrlCreateMenuItem("",$menuCheatSheet)
+
+$miDMangan 					=	GUICtrlCreateMenuItem("Dealer Mangan                   12,000      (4,000  ALL)",$menuCheatSheet)
+$miDHaneman 				=	GUICtrlCreateMenuItem("Dealer Haneman                 18,000      (6,000  ALL)",$menuCheatSheet)
+$miDBaiman 					=	GUICtrlCreateMenuItem("Dealer Baiman                     24,000      (8,000  ALL)",$menuCheatSheet)
+$miDSanbaiman 				=	GUICtrlCreateMenuItem("Dealer Sanbaiman               36,000      (12,000 ALL)",$menuCheatSheet)
+$miDYakuman 				=	GUICtrlCreateMenuItem("Dealer Yakuman                  48,000      (16,000 ALL)",$menuCheatSheet)
+$miDYakuman 				=	GUICtrlCreateMenuItem("Dealer Double Yakuman    96,000      (36,000 ALL)",$menuCheatSheet)
+
+
 
 $groupHand = GUICtrlCreateGroup("Hand", 8, 0, 849, 281)
 
@@ -311,50 +332,445 @@ While 1
 		 Case $mi7
 			$waitType = 3
 			$boolPair = True
+			$OpenWaitEnabled = 0
 		 Case $mi9
 			$NineGates = True
 			$boolPair = False
 			$waitType = 9
+			$OpenWaitEnabled = 0
 		 Case $mi13
 			$Kokushi = True
 			$boolPair = False
 			$waitType = 13
+			$OpenWaitEnabled = 0
 		 Case $miRonWin
 			$WinOnRon = True
 			GUICtrlSetData($debug, "Won on a discard of another player")
 		 Case $miTsumoWin
 			$WinOnRon = False
 			GUICtrlSetData($debug, "Won by drawing the winning tile yourself")
+
 		 Case $checkboxTsumo
-			GUICtrlSetData($debug, "Concealed hand, draws winning tile from the wall to complete it")
+			GUICtrlSetData($debug, "Concealed hand, draws winning tile from the wall to complete it (Won by Tsumo Activated Automatically)")
+			$WinOnRon = False
+
+			If GuiCtrlRead($checkboxHouteiRaoyui) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxHouteiRaoyui, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxNagashiMangan) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxNagashiMangan, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxTenhou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxTenhou, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxChiihou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxChiihou, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxRenhou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxRenhou, $GUI_UNCHECKED)
+			EndIf
+
 		 Case $checkboxRiichi
-			GUICtrlSetData($debug, "You should know what this means...")
+			If GuiCtrlRead($checkboxDoubleRiichi) == $GUI_CHECKED Then
+			   GUICtrlSetData($debug, "Double Riichi disabled, you can only pick one.")
+			   GUICtrlSetState($checkboxDoubleRiichi, $GUI_UNCHECKED)
+			Else
+			   GUICtrlSetData($debug, "Sacrificing 1000 points, to declare riichi, this yields 1 yaku")
+			EndIf
+
+			If GuiCtrlRead($checkboxNagashiMangan) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxNagashiMangan, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxTenhou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxTenhou, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxChiihou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxChiihou, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxRenhou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxRenhou, $GUI_UNCHECKED)
+			EndIf
+
 		 Case $checkboxDoubleRiichi
-			GUICtrlSetData($debug, "Riichi declared on first discard")
+			If GuiCtrlRead($checkboxRiichi) == $GUI_CHECKED Then
+			   GUICtrlSetData($debug, "Riichi disabled, you can only pick one.")
+			   GUICtrlSetState($checkboxRiichi, $GUI_UNCHECKED)
+			Else
+			   GUICtrlSetData($debug, "Riichi declared on first discard")
+			EndIf
+
+			If GuiCtrlRead($checkboxNagashiMangan) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxNagashiMangan, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxTenhou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxTenhou, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxChiihou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxChiihou, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxRenhou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxRenhou, $GUI_UNCHECKED)
+			EndIf
+
 		 Case $checkboxIppatsu
 			GUICtrlSetData($debug, "One-shot, On first go-around, after riichi you get the right tile, without any pon, chi or kan calls")
+
+			If GuiCtrlRead($checkboxNagashiMangan) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxNagashiMangan, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxTenhou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxTenhou, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxChiihou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxChiihou, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxRenhou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxRenhou, $GUI_UNCHECKED)
+			EndIf
 		 Case $checkboxHaiteiRaoyue
-			GUICtrlSetData($debug, "Win on last tile draw (Tsumo on last tile)")
+			If GuiCtrlRead($checkboxHouteiRaoyui) == $GUI_CHECKED Then
+			   GUICtrlSetData($debug, "Houtei Raoyui disabled, you can only pick one, Tsumo enabled aswell.")
+			   GUICtrlSetState($checkboxHouteiRaoyui, $GUI_UNCHECKED)
+			Else
+			   GUICtrlSetData($debug, "Win on last tile draw (Tsumo on last tile)")
+			EndIf
+
+			If GuiCtrlRead($checkboxNagashiMangan) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxNagashiMangan, $GUI_UNCHECKED)
+			EndIf
+
+			$WinOnRon = False
+
+			If GuiCtrlRead($checkboxTenhou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxTenhou, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxChiihou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxChiihou, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxRenhou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxRenhou, $GUI_UNCHECKED)
+			EndIf
 		 Case $checkboxHouteiRaoyui
-			GUICtrlSetData($debug, "Win on last tile discard (Ron on last tile)")
+			If GuiCtrlRead($checkboxHaiteiRaoyue) == $GUI_CHECKED Then
+				  GUICtrlSetData($debug, "Haitei Raoyue disabled, you can only pick one, Ron enabled aswell.")
+				  GUICtrlSetState($checkboxHaiteiRaoyue, $GUI_UNCHECKED)
+			Else
+			   GUICtrlSetData($debug, "Win on last tile discard (Ron on last tile)")
+			EndIf
+
+			If GuiCtrlRead($checkboxNagashiMangan) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxNagashiMangan, $GUI_UNCHECKED)
+			EndIf
+
+			; Ron, so you can't Menzen Tsumo
+			If GuiCtrlRead($checkboxTsumo) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxTsumo, $GUI_UNCHECKED)
+			EndIf
+
+			; Rinshan counts as a Tsumo
+			If GuiCtrlRead($checkboxRinshan) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxRinshan, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxTenhou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxTenhou, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxChiihou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxChiihou, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxRenhou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxRenhou, $GUI_UNCHECKED)
+			EndIf
+
+			$WinOnRon = True
+
 		 Case $checkboxRinshan
 			GUICtrlSetData($debug, "Declare a Kan -> Win by tile drawn from deadwall")
+
+			If GuiCtrlRead($checkboxHouteiRaoyui) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxHouteiRaoyui, $GUI_UNCHECKED)
+			EndIf
+			If GuiCtrlRead($checkboxNagashiMangan) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxNagashiMangan, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxTenhou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxTenhou, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxChiihou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxChiihou, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxRenhou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxRenhou, $GUI_UNCHECKED)
+			EndIf
+
 		 Case $checkboxChankan
 			GUICtrlSetData($debug, "Robbing a Kan/Quad, If a player adds to a Pon on the table, you can steal the tile that would be used for the Kan")
+
+			If GuiCtrlRead($checkboxNagashiMangan) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxNagashiMangan, $GUI_UNCHECKED)
+			EndIf
+
+			; Ron, so you can't Menzen Tsumo
+			If GuiCtrlRead($checkboxTsumo) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxTsumo, $GUI_UNCHECKED)
+			EndIf
+
+			; Rinshan counts as a Tsumo
+			If GuiCtrlRead($checkboxRinshan) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxRinshan, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxHouteiRaoyui) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxHouteiRaoyui, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxHaiteiRaoyue) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxHaiteiRaoyue, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxTenhou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxTenhou, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxChiihou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxChiihou, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxRenhou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxRenhou, $GUI_UNCHECKED)
+			EndIf
+
+
 		 Case $checkboxNagashiMangan
 			GUICtrlSetData($debug, "Only terminals and honours in discard pile, hand doesn't have to be in Tenpai, Value: Mangan")
+
+			If GuiCtrlRead($checkboxTsumo) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxTsumo, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxRiichi) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxRiichi, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxDoubleRiichi) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxDoubleRiichi, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxIppatsu) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxIppatsu, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxHouteiRaoyui) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxHouteiRaoyui, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxHaiteiRaoyue) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxHaiteiRaoyue, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxRinshan) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxRinshan, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxChankan) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxChankan, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxTenhou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxTenhou, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxChiihou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxChiihou, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxRenhou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxRenhou, $GUI_UNCHECKED)
+			EndIf
+
 		 Case $checkboxTenhou
 			GUICtrlSetData($debug, "Blessing of Heaven, the 14 tiles that the dealer draws is a composed hand, Value: Yakuman")
+			If GuiCtrlRead($checkboxTsumo) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxTsumo, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxRiichi) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxRiichi, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxDoubleRiichi) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxDoubleRiichi, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxIppatsu) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxIppatsu, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxHouteiRaoyui) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxHouteiRaoyui, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxHaiteiRaoyue) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxHaiteiRaoyue, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxRinshan) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxRinshan, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxChankan) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxChankan, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxNagashiMangan) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxNagashiMangan, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxChiihou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxChiihou, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxRenhou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxRenhou, $GUI_UNCHECKED)
+			EndIf
+
 		 Case $checkboxChiihou
 			GUICtrlSetData($debug, "Blessing of Earth, The first draw makes a completed hand, Value: Yakuman")
+
+						If GuiCtrlRead($checkboxTsumo) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxTsumo, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxRiichi) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxRiichi, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxDoubleRiichi) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxDoubleRiichi, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxIppatsu) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxIppatsu, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxHouteiRaoyui) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxHouteiRaoyui, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxHaiteiRaoyue) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxHaiteiRaoyue, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxRinshan) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxRinshan, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxChankan) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxChankan, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxTenhou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxTenhou, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxNagashiMangan) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxNagashiMangan, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxRenhou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxRenhou, $GUI_UNCHECKED)
+			EndIf
+
 		 Case $checkboxRenhou
 			GUICtrlSetData($debug, "Blessing of Man, win on first discard, if a concealed Kan is declared doesn't count, Value: Yakuman")
+						If GuiCtrlRead($checkboxTsumo) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxTsumo, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxRiichi) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxRiichi, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxDoubleRiichi) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxDoubleRiichi, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxIppatsu) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxIppatsu, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxHouteiRaoyui) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxHouteiRaoyui, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxHaiteiRaoyue) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxHaiteiRaoyue, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxRinshan) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxRinshan, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxChankan) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxChankan, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxTenhou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxTenhou, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxChiihou) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxChiihou, $GUI_UNCHECKED)
+			EndIf
+
+			If GuiCtrlRead($checkboxNagashiMangan) == $GUI_CHECKED Then
+			   GUICtrlSetState($checkboxNagashiMangan, $GUI_UNCHECKED)
+			EndIf
+
 		 Case 	$miDealer
 			$scrDealer = true
 			GUICtrlSetData($debug, "Dealer, your hands are worth 1.5x more and you pay 2x more")
 		 Case	$miNonDealer
 			$scrDealer = false
 			GUICtrlSetData($debug, "Non-Dealer, you pay 1x and get 1x")
+		 Case	$HotKeySubMenu[0]
+			nullifyOriginChange()
+		 Case	$HotKeySubMenu[1]
+			RandomSeatRoundWind()
+		 Case	$HotKeySubMenu[2]
+			Checker()
+		 Case	$HotKeySubMenu[3]
+			SevenPairs()
+		 Case	$HotKeySubMenu[4]
+			NineGatesEnabler()
+		 Case	$HotKeySubMenu[5]
+			Deleter()
+		 Case	$HotKeySubMenu[6]
+			selectNext()
+		 Case	$HotKeySubMenu[7]
+			selectPrev()
+		 Case $bExport
+			ExportMain()
 	EndSwitch
  WEnd
 
@@ -366,6 +782,9 @@ for $i = 1 to 18 Step 1
 	  GUICtrlSetData($debug, "Click on a tile to change Tile " & $i & " into.")
 	  $changeOrigin = $piTile[$i]
 	  GUICtrlSetState($radioTile[$i], $GUI_CHECKED)
+	  for $f = 1 to 13 Step 1
+			GUICtrlSetState($radioDora[$f], $GUI_UNCHECKED)
+	  Next
    EndIf
 Next
 
@@ -373,6 +792,10 @@ for $i = 1 to 13 Step 1
    if $msg == $dora[$i] Then
 	  GUICtrlSetData($debug, "Click on a tile to change Dora " & $i & " into.")
 	  $changeOrigin = $dora[$i]
+	  GUICtrlSetState($radioDora[$i], $GUI_CHECKED)
+	  for $f = 1 to 18 Step 1
+			GUICtrlSetState($radioTile[$f], $GUI_UNCHECKED)
+	  Next
    EndIf
 Next
 

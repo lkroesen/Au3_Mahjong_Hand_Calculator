@@ -5,23 +5,49 @@ HotKeySet("{F9}", "NineGatesEnabler")
 HotKeySet("{F5}", "Checker")
 HotKeySet("{F7}", "SevenPairs")
 HotKeySet("{DEL}","Deleter")
-HotKeySet("{F4}", "OpenWaitEnabled")
-HotKeySet("{F2}", "FuMain")
-HotKeySet("{F3}", "RoundUp")
+HotKeySet("{F4}", "RandomSeatRoundWind")
 
 ; HOTKEYS ;
 ; 7 due to 7 pairs.
 Global $set[7]
 Global $SevenPairsEnabled = 0
 Global $OpenWaitEnabled = 0
+Global $RandWind = false
 Global $Kokushi = false
 Global $NineGates = false
 Global $NineWait = False
 Global $ThirtWait = False
 
+; Enabler / Disabler of random round wind by F4
+Func RandomSeatRoundWind()
+   if $RandWind == false Then
+	  $RandWind = true
+	  GUICtrlSetData($debug, "Random Winds will be selected")
+   Else
+	  $RandWind = false
+	  GUICtrlSetData($debug, "No Random Winds will be selected")
+   EndIf
+EndFunc
+
+; Randomizer for winds
+Func rndm()
+   $RNG = Random(1,4,1)
+
+   if $RNG == 1 Then
+	  Return "Ton                           East"
+   elseif $RNG == 2 Then
+	  Return "Nan                         South"
+   elseif $RNG == 3 Then
+	  Return "Shaa                        West"
+   Else
+	  Return "Pei                           North"
+   EndIf
+
+EndFunc
+
 ; Enabler or Disabler of Seven Pairs (This also works for Kokushi Mushou)
 Func NineGatesEnabler()
-
+   SevenPairs()
    if $NineGates == false Then
 	  $NineGates = true
 	  GUICtrlSetData($debug, "Enabled Nine Gates")
@@ -60,14 +86,14 @@ Func OpenWaitEnabled()
 
 EndFunc
 
-; Collects data on hand tiles & dora tiles, mainly a debug to see if everything is registered properly.
+; DEPRECATED Collects data on hand tiles & dora tiles, mainly a debug to see if everything is registered properly.
 Func status()
    $string = ""
    for $i = 1 To 18 Step 1
 	  $string &= "Hand Tile " & $i & ": " & TileTranslator($hand[$i]) & "   "
    Next
    for $i = 1 to 13 Step 1
-	  $string &= "Dora Tile " & $i & ": " & $doraValue[$i] & "   "
+	  $string &= "Dora Tile " & $i & ": " & TileTranslator($doraValue[$i]) & "   "
    Next
    GUICtrlSetData($debug, $string)
 EndFunc
@@ -134,6 +160,9 @@ Func Checker()
    EndIf
    GUICtrlSetData($debug, $debugString)
    Calculate()
+   if $nYaku == 0 and $boolYakuman == False Then
+	  msgbox(0, "Illegal Hand!", "No Yaku found, this means that this hand is illegal!")
+   EndIf
 EndFunc
 
 ; Deselects with F1

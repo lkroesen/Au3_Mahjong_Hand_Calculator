@@ -27,6 +27,33 @@ Func DoraMain()
 		 EndIf
 	  Next
    Next
+
+   ; Search hand for Red Tiles
+   for $i = 1 to 18 Step 1
+	  If $hand[$i] == $cMAN5r or $hand[$i] == $cSOU5r or $hand[$i] == $cPIN5r Then
+		 for $f = 1 to 13 Step 1
+			if $doraValue[$f] == $cMAN4 Then
+			   if $hand[$i] == $cMAN5r Then
+				  $nDora+=1
+				  $doraHan+=1
+			   EndIf
+			ElseIf $doraValue[$f] == $cSOU4 Then
+			   if $hand[$i] == $cSOU5r Then
+				  $nDora+=1
+				  $doraHan+=1
+			   EndIf
+			ElseIf $doraValue[$f] == $cPIN4 Then
+			   if $hand[$i] == $cPIN5r Then
+				  $nDora+=1
+				  $doraHan+=1
+			   EndIf
+			EndIf
+		 Next
+		 $nDora += 1
+		 $doraHan += 1
+	  EndIf
+   Next
+
 EndFunc
 
 Func DoraPlusOne($cT, $nr)
